@@ -29,7 +29,7 @@ export function usePageActions(
 
   return useEffect(() => {
       actionsContext.setActions(component || <></>);
-  }, [...deps]);
+  }, [actionsContext, component, ...deps]);
 }
 
 // #endregion

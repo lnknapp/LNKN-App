@@ -2,6 +2,7 @@ import { store } from "../../app/store/store";
 import { clearException } from "../../app/store/exceptionSlice";
 import { useAppSelector } from "../../hooks";
 import { ExceptionLevel } from "../../models/exception/ExceptionLevel";
+import { FaExclamationTriangle, FaInfoCircle, FaBan, FaCheck, FaInfo } from "react-icons/fa";
 
 import "./ExceptionMessage.scss";
 export function ExceptionMessage() {
@@ -20,11 +21,11 @@ export function ExceptionMessage() {
   variants.set(ExceptionLevel.success, "success");
   const variant = variants.get(level!);
 
-  const icons = new Map<ExceptionLevel, string>();
-  icons.set(ExceptionLevel.information, "info-circle");
-  icons.set(ExceptionLevel.warning, "exclamation-triangle");
-  icons.set(ExceptionLevel.error, "ban");
-  icons.set(ExceptionLevel.success, "check");
+  const icons = new Map<ExceptionLevel, JSX.Element>();
+  icons.set(ExceptionLevel.information, <FaInfoCircle />);
+  icons.set(ExceptionLevel.warning, <FaExclamationTriangle />);
+  icons.set(ExceptionLevel.error, <FaBan />);
+  icons.set(ExceptionLevel.success, <FaCheck />);
   const icon = icons.get(level!);
 
   const titles = new Map<ExceptionLevel, string>();
@@ -45,7 +46,7 @@ export function ExceptionMessage() {
             <div className="d-flex justify-content-center w-100 align-items-center">
               <div className={`text-dark d-flex justify-content-center align-items-center ${variant} py-2 px-3 border-radius-vh100`}>
                 <div className={`icon bg-${variant} border border-0 rounded-circle me-2 text-white`}>
-                  <span>icon</span>
+                  <span>{icon}</span>
                 </div>
                 <span className="fw-bold">
                 {message}
