@@ -1,0 +1,144 @@
+// Background Color
+.bg-primary-light {
+  background-color: $color-primary-light !important;
+}
+
+.bg-primary-dark {
+  background-color: $color-primary-dark !important;
+}
+
+.bg-secondary-light {
+  background-color: $color-secondary-light !important;
+}
+
+.bg-secondary-dark {
+  background-color: $color-secondary-dark !important;
+}
+
+.border-danger {
+  border-color: $color-error !important;
+}
+
+.border-darken {
+  border-color: $color-darken !important;
+}
+
+.border-lighten {
+  border-color: $color-lighten !important;
+}
+
+// Border
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.border-light {
+  border-color: $color-darken-light !important;
+}
+
+.no-border {
+  border-width: 0 !important;
+}
+
+.border-radius-sm {
+  border-radius: 0.875rem !important;
+}
+
+.border-radius-md{
+  border-radius: $border-radius !important;
+}
+
+.border-radius-lg{
+  border-radius: 20px !important;
+}
+
+.border-radius-vh100 {
+  border-radius: 100vh !important;
+}
+
+
+// Text
+.text-danger {
+  color: $color-error !important;
+}
+
+
+.text-primary {
+  color: $color-primary !important;
+}
+
+.text-primary-light {
+  color: $color-primary-light !important;
+}
+
+.text-primary-dark {
+  color: $color-primary-dark !important;
+}
+
+.text-soft {
+  color: $color-gray-soft !important;
+}
+
+.text-lg {
+  font-size: 1.75em !important;
+}
+
+.text-md {
+  font-size: 1.5em !important;
+}
+
+.text-xl {
+  font-size: 3.5em !important;
+}
+
+.text-sm {
+  font-size: 0.875em !important;
+}
+
+.text-xsm {
+  font-size: 0.875em !important;
+}
+
+// Line
+.line-spacing-normal {
+  line-height: 1.2 !important;
+}
+
+.line-height-1 {
+  line-height: 1 !important;
+}
+
+.text-underline {
+  text-decoration: underline !important;
+}
+
+// Cursor
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+// Box Shadow
+.shadow {
+  box-shadow: $box-shadow;
+}
+
+// Float
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
+}
+
+// Visible and Invisible
+.lg-invisible {
+  visibility: visible;
+  // on large screens make it invisible
+  @media(min-width: $large-screen-up) {
+    visibility: hidden;
+  }
+}

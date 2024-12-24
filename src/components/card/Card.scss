@@ -1,0 +1,19 @@
+@import "../../css/theme";
+
+.card {
+    border-radius: 16px;
+    border-width: 0;
+    border-style: none;
+}
+.flat-card {
+    overflow: hidden;
+    background-color: $color-bg-light;
+    box-shadow: none;
+    border-width: 0;
+}
+
+
+.card-header {
+    background-color: $color-bg-light;
+    border-bottom-color: $color-gray-soft;
+}

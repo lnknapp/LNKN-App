@@ -1,0 +1,22 @@
+@import "../../css/theme";
+
+.link {
+  @extend .transition-color;
+  color: $color-primary;
+  background-color: transparent;
+
+  &:hover,
+  &.active {
+    color: $color-primary-dark !important;
+    text-decoration: none !important;
+    background-color: transparent;
+  }
+
+  &.toggle {
+    color: $color-secondary !important;
+
+    &:hover{
+      color: $color-secondary !important;
+    }
+  }
+}

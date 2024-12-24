@@ -1,0 +1,32 @@
+.danger{
+  background-color: #ffdbdb;
+}
+
+.warning {
+  background-color: #fff3cd;
+}
+
+.info {
+  background-color: #d1ecf1;
+}
+
+.success {
+  background-color: #d4edda;
+}
+
+.toggle {
+  cursor: pointer;
+
+  &:hover {
+    color: rgba(0,0,0,0.5) !important;
+    transition: all 0.3s ease-in-out;
+  }
+}
+
+.rounded-sm {
+  border-radius: 0.2rem;
+}
+
+.icon {
+ padding: 0.4rem;
+}
