@@ -1,25 +1,26 @@
-import { Link } from "../../../components";
-import { routes } from "../../../app/routes";
-import PageLayout from "../../PageLayout";
+import AppLayout from '../../AppLayout';
+import PageLayout from '../../PageLayout';
+import { Link } from '../../../components';
+import { routes } from '../../../app/routes';
+import { FaArrowLeft } from 'react-icons/fa';
+import { useSetPageTitle } from '../../../hooks';
 
 export function Forbidden() {
+  useSetPageTitle("");
   return (
-    <PageLayout>
-      <div className="row">
-        <div className="col-auto text-danger" style={{ fontSize: 90 }}>
-          <span>icon</span>
-        </div>
-        <div className="col">
-          <h1>403 Forbidden</h1>
-          <p>Sorry, you don't have permission to access this page.</p>
-          <p>
-            Would you like to go back to the{" "}
-            <Link url={routes.home}>homepage</Link>?
-          </p>
-        </div>
-      </div>
-    </PageLayout>
+    <AppLayout>
+      <PageLayout>
+          <div className="vh-100 w-100 d-flex flex-column justify-content-center align-items-center">
+            <p style={{fontSize: "1.5rem"}}>Oop! 403 Error!</p>
+            <span style={{fontSize: "6rem", lineHeight: "6rem"}}>Unauthorized</span>
+            <Link url={routes.home} className="btn btn-primary mt-3 border-radius-xl px-4 py-2">
+              <FaArrowLeft className="me-2" />
+              Go home
+            </Link>
+          </div>
+      </PageLayout>
+    </AppLayout>
   );
 }
 
-export default Forbidden;
+export default Forbidden

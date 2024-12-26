@@ -2,24 +2,23 @@ import AppLayout from '../../AppLayout';
 import PageLayout from '../../PageLayout';
 import { Link } from '../../../components';
 import { routes } from '../../../app/routes';
+import { FaArrowLeft } from 'react-icons/fa';
+import { useSetPageTitle } from '../../../hooks';
 
 export function NotFound() {
+  useSetPageTitle("");
   return (
     <AppLayout>
       <PageLayout>
-        <div className="row">
-          <div className="col-auto text-danger" style={{ fontSize: 90 }}>
-            <span>icon</span>
+          <div className="vh-100 w-100 d-flex flex-column justify-content-center align-items-center">
+            <p style={{fontSize: "1.5rem"}}>Oop! 404 Error!</p>
+            <span style={{fontSize: "6rem", lineHeight: "6rem"}}>Page Not</span>
+            <span className="mb-4" style={{fontSize: "6rem", lineHeight: "6rem"}}>Found</span>
+            <Link url={routes.home} className="btn btn-primary mt-3 border-radius-xl px-4 py-2">
+              <FaArrowLeft className="me-2" />
+              Go home
+            </Link>
           </div>
-          <div className="col">
-            <h1>404 Not Found</h1>
-            <p>Sorry, the page you are trying to access does not exists.</p>
-            <p>
-              Would you like to go back to the{" "}
-              <Link url={routes.home}>homepage</Link>?
-            </p>
-          </div>
-        </div>
       </PageLayout>
     </AppLayout>
   );

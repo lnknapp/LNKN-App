@@ -8,6 +8,7 @@ import { router } from "./app/routes";
 import "hammerjs";
 import "./css/site.scss";
 import { ErrorBoundary } from "./features";
+import { PageTitleProvider } from "./hooks";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -28,7 +29,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ErrorBoundary>
-        <RouterProvider router={router}></RouterProvider>
+        <PageTitleProvider>
+          <RouterProvider router={router} />
+        </PageTitleProvider>
       </ErrorBoundary>
     </Provider>
   </React.StrictMode>

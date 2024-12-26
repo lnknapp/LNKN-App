@@ -1,14 +1,18 @@
-import PageLayout from "../PageLayout";
+import { PageLayout } from "../PageLayout";
 import { UserService } from "../../services";
+import { useSetPageTitle } from "../../hooks";
 
 export function HomePage() {
+
+  useSetPageTitle("Dashboard");
+
   // Avoid calling the API if the user is not signed in
   if (!UserService.isSignedIn()) return <></>;
 
   return (
     <PageLayout>
-      <div className="row">
-        <h1>Welcome to LNKN!</h1>
+      <div>
+        <p>blah blah blah</p>
       </div>
     </PageLayout>
   );
