@@ -45,7 +45,7 @@ export class AccountRepo extends BaseRepository {
     const url = 'account/register';
     const body = {
       "email": request.email,
-      "username": request.username,
+      "userName": request.userName,
       "password": request.password,
       "confirmPassword": request.confirmPassword,
     };
@@ -117,6 +117,38 @@ export class AccountRepo extends BaseRepository {
     }
     catch (e: any) {
       throw new ChangePasswordError(e?.message, e?.code);
+    }
+  }
+
+  /**
+   * Check if a user with the same username exists.
+   * @param username - The username to check.
+   * @returns boolean if the username exists.
+   */
+  async checkUsernameExists(username: string): Promise<boolean> {
+    const url = 'account/checkusername';
+    try {
+      const response = await this.client.get(`${url}/${username}`);
+      return this.handleResponse(response);
+    }
+    catch (e: any) {
+      throw new RepositoryError(e?.message, e?.code);
+    }
+  }
+
+  /**
+   * Check if a user with the same email exists.
+   * @param email - The email to check.
+   * @returns boolean if the email exists.
+   */
+  async checkEmailExists(email: string): Promise<boolean> {
+    const url = 'account/checkemail';
+    try {
+      const response = await this.client.get(`${url}/${email}`);
+      return this.handleResponse(response);
+    }
+    catch (e: any) {
+      throw new RepositoryError(e?.message, e?.code);
     }
   }
 }

@@ -9,11 +9,26 @@ import { FloatingLabel, Form } from 'react-bootstrap';
 
 export function RegisterPage() {
 
-  const { registerUser: handleSubmit, showSpinner } = useRegistration();
+  const {
+    registerUser: handleSubmit,
+    showSpinner,
+    checkUsernameExists,
+    checkEmailExists
+  } = useRegistration();
 
   const validationSchema = yup.object().shape({
-    email: yup.string().email("Email must be valid").required("Email is required"),
-    username: yup.string().required("Username is required"),
+    email: yup.string().email("Email must be valid").required("Email is required")
+      .test('checkEmailExists', 'Email already exists', async (value) => {
+        if (!value) return false;
+        const exists = await checkEmailExists(value);
+        return !exists;
+      }),
+    userName: yup.string().required("Username is required")
+      .test('checkUsernameExists', 'Username already exists', async (value) => {
+        if (!value) return false;
+        const exists = await checkUsernameExists(value);
+        return !exists;
+      }),
     password: yup.string()
       .required("Password is required")
       .min(8, "Password must be at least 8 characters long")
@@ -36,13 +51,14 @@ export function RegisterPage() {
         validationSchema={validationSchema}
         initialValues={{
           email: '',
-          username: '',
+          userName: '',
           password: '',
           confirmPassword: ''
         }}
         onSubmit={async (values) => {
           handleSubmit({
             email: values.email,
+            userName: values.userName,
             password: values.password,
             confirmPassword: values.confirmPassword,
           } as RegisterRequest)
@@ -71,14 +87,14 @@ export function RegisterPage() {
                   <FloatingLabel label="Username" className="mb-3">
                     <Form.Control
                         type="string"
-                        name="username"
+                        name="userName"
                         placeholder='Username'
-                        value={values.username}
+                        value={values.userName}
                         onChange={handleChange}
-                        isInvalid={touched.username && !!errors.username}
+                        isInvalid={touched.userName && !!errors.userName}
                       />
                       <Form.Control.Feedback type="invalid">
-                        {errors.username}
+                        {errors.userName}
                       </Form.Control.Feedback>
                   </FloatingLabel>
                 </div>

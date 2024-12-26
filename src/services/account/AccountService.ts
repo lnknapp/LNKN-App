@@ -87,6 +87,37 @@ export class AccountService {
     }
   }
 
+
+  /**
+   * Check if a user with the same username exists.
+   * @param username - The username to check.
+   * @returns boolean if the username exists.
+   */
+  async checkUsernameExists(username: string) {
+    try {
+      const response = await this.repo.checkUsernameExists(username);
+      return response;
+    }
+    catch(error) {
+      console.error(error);
+    }
+  }
+
+  /**
+   * Check if a user with the same email exists.
+   * @param email - The email to check.
+   * @returns boolean if the email exists.
+   */
+  async checkEmailExists(email: string) {
+    try {
+      const response = await this.repo.checkEmailExists(email);
+      return response;
+    }
+    catch(error) {
+      console.error(error);
+    }
+  }
+
 }
 
 export default AccountService;
