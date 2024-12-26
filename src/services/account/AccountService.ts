@@ -12,14 +12,14 @@ export class AccountService {
 
   /**
    * Logs in a user with the provided email, password, and rememberMe flag.
-   * @param email - The user's email.
+   * @param emailOrUsername - The user's email.
    * @param password - The user's password.
    * @param rememberMe - Flag indicating whether to remember the user's login.
    * @returns A promise that resolves to the login response.
    */
-  async login(email: string, password: string, rememberMe: boolean) {
+  async login(emailOrUsername: string, password: string, rememberMe: boolean) {
     try {
-      const response = await this.repo.login(email, password, rememberMe);
+      const response = await this.repo.login(emailOrUsername, password, rememberMe);
       return response;
     } catch (error) {
       console.error(error);

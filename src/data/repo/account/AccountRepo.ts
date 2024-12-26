@@ -14,16 +14,16 @@ export class AccountRepo extends BaseRepository {
 
   /**
    * Logs in the user with the provided email and password.
-   * @param email - The user's email.
+   * @param emailOrUsername - The user's email.
    * @param password - The user's password.
    * @param rememberMe - Indicates whether to remember the user's login.
    * @returns A promise that resolves to the login response, or null/undefined if unsuccessful.
    * @throws {LoginError} If an error occurs during the login process.
    */
-  async login(email: string, password: string, rememberMe: boolean): Promise<LoginResponse | null | undefined> {
+  async login(emailOrUsername: string, password: string, rememberMe: boolean): Promise<LoginResponse | null | undefined> {
     const url = "account/signin";
     const body = {
-      "email": email,
+      "emailOrUsername": emailOrUsername,
       "password": password,
     };
 

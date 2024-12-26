@@ -21,14 +21,10 @@ export class UserService extends BaseEntityService<UserModel, UserRepo, UserODat
   static readonly getDisplayName = () => {
     let currentUser = this.getUserInfo();
     return !currentUser ? "" :
-      `${currentUser?.firstName ?? currentUser.userName} ${currentUser.lastName ?? ""}`;
+      `${currentUser.userName}`;
   }
 
   static readonly getId = () => this.getUserInfo()?.id ?? 0;
-
-  static readonly getFirstName = () => this.getUserInfo()?.firstName ?? "";
-
-  static readonly getLastName = () => this.getUserInfo()?.lastName ?? "";
 
   static readonly getUserName = () => this.getUserInfo()?.userName ?? "";
 
