@@ -10,7 +10,7 @@ export function Forbidden() {
   return (
     <AppLayout>
       <PageLayout>
-          <div className="vh-100 w-100 d-flex flex-column justify-content-center align-items-center">
+          <div className="vh-100 w-100 d-flex flex-column justify-content-center align-items-center" style={{ height: 'calc(100vh - 10rem)' }}>
             <p style={{fontSize: "1.5rem"}}>Oop! 403 Error!</p>
             <span style={{fontSize: "6rem", lineHeight: "6rem"}}>Unauthorized</span>
             <Link url={routes.home} className="btn btn-primary mt-3 border-radius-xl px-4 py-2">

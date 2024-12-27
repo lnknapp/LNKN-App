@@ -10,7 +10,7 @@ export function NotFound() {
   return (
     <AppLayout>
       <PageLayout>
-          <div className="vh-100 w-100 d-flex flex-column justify-content-center align-items-center">
+          <div className="w-100 d-flex flex-column justify-content-center align-items-center" style={{ height: 'calc(100vh - 10rem)' }}>
             <p style={{fontSize: "1.5rem"}}>Oop! 404 Error!</p>
             <span style={{fontSize: "6rem", lineHeight: "6rem"}}>Page Not</span>
             <span className="mb-4" style={{fontSize: "6rem", lineHeight: "6rem"}}>Found</span>

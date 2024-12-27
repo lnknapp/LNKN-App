@@ -18,7 +18,7 @@ export function PageLayout({children}: Readonly<PageLayoutProps>) {
 
   return (
     <>
-      <div className={`${style.pageTitle}`}>
+      <div className={`${style.pageHeader}`}>
         <PageTitle />
       </div>
       <article className={`${style.pageContent} container-fluid`}>
