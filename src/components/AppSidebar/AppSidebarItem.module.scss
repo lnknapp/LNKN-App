@@ -18,4 +18,9 @@
 .activeLink {
   background-color: $primary !important;
   color: white;
+
+  &.footer {
+    background-color: rgba(0,0,0,0.05) !important;
+    color: #343a40;
+  }
 }
