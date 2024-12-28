@@ -1,5 +1,5 @@
 import { AccountRepo } from "../../data/repo";
-import { ChangePasswordRequest, ForgotPasswordRequest, RegisterRequest, ResetPasswordRequest } from "../../models";
+import { ChangePasswordRequest, ForgotPasswordRequest, ForgotUsernameRequest, RegisterRequest, ResetPasswordRequest } from "../../models";
 import { UserService } from "../authentication/UserService";
 /**
  * Service class for handling account-related operations.
@@ -50,6 +50,21 @@ export class AccountService {
   async forgotPassword(request: ForgotPasswordRequest) {
     try {
       const response = await this.repo.forgotPassword(request);
+      return response;
+    }
+    catch(error) {
+      console.error(error);
+    }
+  }
+
+  /**
+   * Sends a username reminder email to the user with the provided email.
+   * @param request - The forgot username request.
+   * @returns A promise that resolves to the forgot username response.
+   */
+  async forgotUsername(request: ForgotUsernameRequest) {
+    try {
+      const response = await this.repo.forgotUsername(request);
       return response;
     }
     catch(error) {

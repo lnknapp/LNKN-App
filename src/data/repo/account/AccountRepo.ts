@@ -1,4 +1,12 @@
-import { ChangePasswordRequest, ForgotPasswordRequest, LoginResponse, RegisterRequest, RegisterResult, ResetPasswordRequest } from "../../../models";
+import {
+  ChangePasswordRequest,
+  ForgotPasswordRequest,
+  ForgotUsernameRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResult,
+  ResetPasswordRequest
+} from "../../../models";
 import { BaseRepository, RepositoryError } from "../BaseRepository";
 
 export class LoginError extends RepositoryError {}
@@ -6,6 +14,7 @@ export class RegisterError extends RepositoryError {}
 export class ForgotPasswordError extends RepositoryError {}
 export class ResetPasswordError extends RepositoryError {}
 export class ChangePasswordError extends RepositoryError {}
+export class ForgotUsernameError extends RepositoryError {}
 
 /**
  * Repository class for handling account-related operations.
@@ -74,6 +83,25 @@ export class AccountRepo extends BaseRepository {
     }
     catch (e: any) {
       throw new ForgotPasswordError(e?.message, e?.code);
+    }
+  }
+
+  /**
+   * Sends a username reminder email to the user with the provided email in the request.
+   * @param request - The forgot username request.
+   * @returns A promise that resolves to true if the password reset email is sent successfully, false otherwise.
+   */
+  async forgotUsername(request: ForgotUsernameRequest): Promise<boolean> {
+    const url = 'account/forgotusername';
+    const body = {
+      "email": request.email
+    };
+    try {
+      const response = await this.client.post(url, body);
+      return this.handleResponse(response);
+    }
+    catch (e: any) {
+      throw new ForgotUsernameError(e?.message, e?.code);
     }
   }
 

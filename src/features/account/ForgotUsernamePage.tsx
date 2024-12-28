@@ -1,15 +1,15 @@
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { motion } from "framer-motion";
-import { useForgotPassword } from "./hooks";
+import { useForgotUsername } from "./hooks";
 import { Button, Link } from "../../components";
 import { routes } from "../../app/routes";
 import { FloatingLabel, Form } from 'react-bootstrap';
-import { ForgotPasswordRequest } from '../../models';
+import { ForgotUsernameRequest } from '../../models';
 import { FaArrowLeft } from 'react-icons/fa';
 
 export function ForgotUsernamePage() {
-  const { forgotPassword: handleSubmit, showSpinner } = useForgotPassword();
+  const { forgotUsername: handleSubmit, showSpinner } = useForgotUsername();
 
   const validationSchema = yup.object().shape({
     email: yup.string().email("Email must be valid").required("Email is required")
@@ -32,7 +32,7 @@ export function ForgotUsernamePage() {
           onSubmit={async (values) => {
             handleSubmit({
               email: values.email
-            } as ForgotPasswordRequest)
+            } as ForgotUsernameRequest)
           }}
         >
           {({values, handleSubmit, handleChange, touched, errors}) => {
