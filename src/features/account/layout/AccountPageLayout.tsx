@@ -5,7 +5,7 @@ import style from "../styles/Account.module.scss";
 
 export function AccountPageLayout(props: React.PropsWithChildren) {
   return (
-    <AppLayout includeTopbar={false} includeSidebar={false}>
+    <AppLayout includeSidebar={false}>
       <div className={` h-100 d-flex flex-column justify-content-center`}>
         <div className={`d-flex h-100 flex-column flex-lg-row ${style.pageContainer}`}>
           <div className={`${style.contentContainer} bg-white text-dark`}>

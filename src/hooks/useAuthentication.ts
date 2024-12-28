@@ -9,10 +9,10 @@ export function useAuthentication() {
 
   const accountService = new AccountService();
 
-  const loginUser = async (email: string, password: string, rememberMe: boolean) => {
+  const loginUser = async (emailOrUsername: string, password: string, rememberMe: boolean) => {
     try {
       show();
-      const loginResponse = await accountService.login(email, password, rememberMe);
+      const loginResponse = await accountService.login(emailOrUsername, password, rememberMe);
 
       if (loginResponse?.success){
 

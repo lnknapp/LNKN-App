@@ -1,4 +1,12 @@
-import { ChangePasswordRequest, ForgotPasswordRequest, LoginResponse, RegisterRequest, RegisterResult, ResetPasswordRequest } from "../../../models";
+import {
+  ChangePasswordRequest,
+  ForgotPasswordRequest,
+  ForgotUsernameRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResult,
+  ResetPasswordRequest
+} from "../../../models";
 import { BaseRepository, RepositoryError } from "../BaseRepository";
 
 export class LoginError extends RepositoryError {}
@@ -6,6 +14,7 @@ export class RegisterError extends RepositoryError {}
 export class ForgotPasswordError extends RepositoryError {}
 export class ResetPasswordError extends RepositoryError {}
 export class ChangePasswordError extends RepositoryError {}
+export class ForgotUsernameError extends RepositoryError {}
 
 /**
  * Repository class for handling account-related operations.
@@ -14,16 +23,16 @@ export class AccountRepo extends BaseRepository {
 
   /**
    * Logs in the user with the provided email and password.
-   * @param email - The user's email.
+   * @param emailOrUsername - The user's email.
    * @param password - The user's password.
    * @param rememberMe - Indicates whether to remember the user's login.
    * @returns A promise that resolves to the login response, or null/undefined if unsuccessful.
    * @throws {LoginError} If an error occurs during the login process.
    */
-  async login(email: string, password: string, rememberMe: boolean): Promise<LoginResponse | null | undefined> {
+  async login(emailOrUsername: string, password: string, rememberMe: boolean): Promise<LoginResponse | null | undefined> {
     const url = "account/signin";
     const body = {
-      "email": email,
+      "emailOrUsername": emailOrUsername,
       "password": password,
     };
 
@@ -45,7 +54,7 @@ export class AccountRepo extends BaseRepository {
     const url = 'account/register';
     const body = {
       "email": request.email,
-      "username": request.username,
+      "userName": request.userName,
       "password": request.password,
       "confirmPassword": request.confirmPassword,
     };
@@ -74,6 +83,25 @@ export class AccountRepo extends BaseRepository {
     }
     catch (e: any) {
       throw new ForgotPasswordError(e?.message, e?.code);
+    }
+  }
+
+  /**
+   * Sends a username reminder email to the user with the provided email in the request.
+   * @param request - The forgot username request.
+   * @returns A promise that resolves to true if the password reset email is sent successfully, false otherwise.
+   */
+  async forgotUsername(request: ForgotUsernameRequest): Promise<boolean> {
+    const url = 'account/forgotusername';
+    const body = {
+      "email": request.email
+    };
+    try {
+      const response = await this.client.post(url, body);
+      return this.handleResponse(response);
+    }
+    catch (e: any) {
+      throw new ForgotUsernameError(e?.message, e?.code);
     }
   }
 
@@ -117,6 +145,38 @@ export class AccountRepo extends BaseRepository {
     }
     catch (e: any) {
       throw new ChangePasswordError(e?.message, e?.code);
+    }
+  }
+
+  /**
+   * Check if a user with the same username exists.
+   * @param username - The username to check.
+   * @returns boolean if the username exists.
+   */
+  async checkUsernameExists(username: string): Promise<boolean> {
+    const url = 'account/checkusername';
+    try {
+      const response = await this.client.get(`${url}/${username}`);
+      return this.handleResponse(response);
+    }
+    catch (e: any) {
+      throw new RepositoryError(e?.message, e?.code);
+    }
+  }
+
+  /**
+   * Check if a user with the same email exists.
+   * @param email - The email to check.
+   * @returns boolean if the email exists.
+   */
+  async checkEmailExists(email: string): Promise<boolean> {
+    const url = 'account/checkemail';
+    try {
+      const response = await this.client.get(`${url}/${email}`);
+      return this.handleResponse(response);
+    }
+    catch (e: any) {
+      throw new RepositoryError(e?.message, e?.code);
     }
   }
 }

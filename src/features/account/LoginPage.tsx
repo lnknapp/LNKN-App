@@ -11,7 +11,7 @@ export function LoginPage() {
   const { loginUser, showSpinner } = useAuthentication();
 
   const validationSchema = yup.object().shape({
-    email: yup.string().email("Email must be valid").required("Email Address is required"),
+    emailOrUsername: yup.string().required("Email or Username is required"),
     password: yup.string().required("Password is required"),
     rememberMe: yup.boolean().notRequired()
   })
@@ -31,28 +31,28 @@ export function LoginPage() {
       <Formik
         validationSchema={validationSchema}
         initialValues={{
-          email: "",
+          emailOrUsername: "",
           password: "",
           rememberMe: false
         }}
-        onSubmit={async (values) => { loginUser(values.email, values.password, values.rememberMe) }}
+        onSubmit={async (values) => { loginUser(values.emailOrUsername, values.password, values.rememberMe) }}
       >
         {({values, handleSubmit, handleChange, errors, touched, setFieldValue}) => {
           return (
             <Form onSubmit={handleSubmit} noValidate>
               <div className="row">
                 <div className="col col-24">
-                  <FloatingLabel label="Email or username" className="mb-3">
+                  <FloatingLabel label="Email or Username" className="mb-3">
                     <Form.Control
-                        type="email"
-                        placeholder="Email or username"
-                        name="email"
-                        value={values.email}
+                        type="string"
+                        placeholder="Email or Username"
+                        name="emailOrUsername"
+                        value={values.emailOrUsername}
                         onChange={handleChange}
-                        isInvalid={touched.email && !!errors.email}
+                        isInvalid={touched.emailOrUsername && !!errors.emailOrUsername}
                       />
                       <Form.Control.Feedback type="invalid">
-                        {errors.email}
+                        {errors.emailOrUsername}
                       </Form.Control.Feedback>
                   </FloatingLabel>
                 </div>

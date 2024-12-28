@@ -6,3 +6,4 @@ export * from './UserInfo';
 
 export * from './register';
 export * from './password';
+export * from './username';

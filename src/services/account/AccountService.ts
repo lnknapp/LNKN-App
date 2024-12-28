@@ -1,5 +1,5 @@
 import { AccountRepo } from "../../data/repo";
-import { ChangePasswordRequest, ForgotPasswordRequest, RegisterRequest, ResetPasswordRequest } from "../../models";
+import { ChangePasswordRequest, ForgotPasswordRequest, ForgotUsernameRequest, RegisterRequest, ResetPasswordRequest } from "../../models";
 import { UserService } from "../authentication/UserService";
 /**
  * Service class for handling account-related operations.
@@ -12,14 +12,14 @@ export class AccountService {
 
   /**
    * Logs in a user with the provided email, password, and rememberMe flag.
-   * @param email - The user's email.
+   * @param emailOrUsername - The user's email.
    * @param password - The user's password.
    * @param rememberMe - Flag indicating whether to remember the user's login.
    * @returns A promise that resolves to the login response.
    */
-  async login(email: string, password: string, rememberMe: boolean) {
+  async login(emailOrUsername: string, password: string, rememberMe: boolean) {
     try {
-      const response = await this.repo.login(email, password, rememberMe);
+      const response = await this.repo.login(emailOrUsername, password, rememberMe);
       return response;
     } catch (error) {
       console.error(error);
@@ -58,6 +58,21 @@ export class AccountService {
   }
 
   /**
+   * Sends a username reminder email to the user with the provided email.
+   * @param request - The forgot username request.
+   * @returns A promise that resolves to the forgot username response.
+   */
+  async forgotUsername(request: ForgotUsernameRequest) {
+    try {
+      const response = await this.repo.forgotUsername(request);
+      return response;
+    }
+    catch(error) {
+      console.error(error);
+    }
+  }
+
+  /**
    * Resets the password of the user.
    * @param request - The reset password request.
    * @returns A promise that resolves to the reset password response.
@@ -80,6 +95,37 @@ export class AccountService {
   async changePassword(request: ChangePasswordRequest) {
     try {
       const response = await this.repo.changePassword(request);
+      return response;
+    }
+    catch(error) {
+      console.error(error);
+    }
+  }
+
+
+  /**
+   * Check if a user with the same username exists.
+   * @param username - The username to check.
+   * @returns boolean if the username exists.
+   */
+  async checkUsernameExists(username: string) {
+    try {
+      const response = await this.repo.checkUsernameExists(username);
+      return response;
+    }
+    catch(error) {
+      console.error(error);
+    }
+  }
+
+  /**
+   * Check if a user with the same email exists.
+   * @param email - The email to check.
+   * @returns boolean if the email exists.
+   */
+  async checkEmailExists(email: string) {
+    try {
+      const response = await this.repo.checkEmailExists(email);
       return response;
     }
     catch(error) {
