@@ -12,7 +12,7 @@ export function HomePage() {
   return (
     <PageLayout>
       <div>
-        <p>blah blah blah</p>
+        <p className="text-6xl">blah blah blah</p>
       </div>
     </PageLayout>
   );

@@ -7,6 +7,7 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./app/routes";
 import "hammerjs";
 import "./css/site.scss";
+import './index.css';
 import { ErrorBoundary } from "./features";
 import { PageTitleProvider } from "./hooks";
 
