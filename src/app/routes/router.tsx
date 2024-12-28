@@ -25,12 +25,12 @@ const browserRouter = createBrowserRouter([
   },
   //Account
   {
-    path: "account",
+    path: "",
     element: <Features.AccountPageLayout />,
     errorElement: <Features.ErrorPage />,
     children: [
       {
-        path: "",
+        path: "login",
         element: <Features.LoginPage />,
       },
       {
@@ -38,19 +38,15 @@ const browserRouter = createBrowserRouter([
         element: <Features.RegisterPage />,
       },
       {
-        path: "login",
-        element: <Features.LoginPage />,
-      },
-      {
         path: `login?returnUrl=:returnUrl`,
         element: <Features.LoginPage />,
       },
       {
-        path: "forgotPassword",
+        path: "forgot-password",
         element: <Features.ForgotPasswordPage />,
       },
       {
-        path: "forgotPasswordConfirmation",
+        path: "forgot-password/confirmation",
         element: <Features.ForgotPasswordConfirmationPage />,
       },
       {
@@ -62,15 +58,19 @@ const browserRouter = createBrowserRouter([
         element: <Features.ForgotUsernameConfirmationPage />,
       },
       {
-        path: "resetPassword",
+        path: "reset-password",
         element: <Features.ResetPasswordPage />,
       },
       {
-        path: "resetPasswordConfirmation",
+        path: "reset-password/confirmation",
         element: <Features.ResetPasswordConfirmationPage />,
       },
     ],
   },
+
+  //Pages
+  {
+  }
 ]);
 
 /**
