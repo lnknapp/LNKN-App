@@ -7,7 +7,7 @@ import { UserService } from "../services";
 function PageTitle() {
   const { title } = usePageTitle();
   if (title && title !== "") {
-    return <h2 className="m-0">{title}</h2>;
+    return <h2 className="text-3xl font-semibold m-0">{title}</h2>;
   }
   return <div></div>;
 }
@@ -23,15 +23,15 @@ export function PageLayout({ children }: Readonly<PageLayoutProps>) {
     <>
       <div className={`${style.pageHeader}`}>
         <PageTitle />
-        <div className="d-flex align-items-center">
+        <div className="flex items-center">
           <Avatar name={user!.userName} size="40" round={true} />
-          <div className="ms-2 d-flex flex-column justify-content-center">
-            <div className="fw-bold" style={{fontSize: "1rem", lineHeight: '1.1rem'}}>@{user!.userName}</div>
-            <div className="text-muted" style={{fontSize: "0.9rem", lineHeight: '1rem' }}>Basic Subscription</div>
+          <div className="ms-2 d-flex flex-col justify-center">
+            <div className="font-bold" style={{fontSize: "1rem", lineHeight: '1.1rem'}}>@{user!.userName}</div>
+            <div className="text-gray-500" style={{fontSize: "0.9rem", lineHeight: '1rem' }}>Basic Subscription</div>
           </div>
         </div>
       </div>
-      <article className={`${style.pageContent} container-fluid`}>
+      <article className={`${style.pageContent}`}>
         {children}
       </article>
     </>

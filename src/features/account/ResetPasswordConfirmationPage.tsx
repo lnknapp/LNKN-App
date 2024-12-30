@@ -10,9 +10,9 @@ export function ResetPasswordConfirmationPage() {
       exit={{ y: "50%", opacity: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut"}}
     >
-      <h2 className="fs-1">Password reset successful</h2>
-      <h4 className="fs-5 text-muted mb-4 fw-lighter">You can now log in with your new password.</h4>
-      <Button className="btn-primary" onClick={() => { router.navigate(routes.account.login) }}>Login</Button>
+      <h2 className="text-lg">Password reset successful</h2>
+      <h4 className="text-lg text-gray-500 mb-4">You can now log in with your new password.</h4>
+      <Button onClick={() => { router.navigate(routes.account.login) }}>Login</Button>
     </motion.div>
   );
 }

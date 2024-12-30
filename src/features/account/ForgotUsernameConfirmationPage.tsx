@@ -11,13 +11,13 @@ export function ForgotUsernameConfirmationPage() {
       exit={{ y: "50%", opacity: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut"}}
     >
-    <h2 className="fs-1">Please check your email</h2>
-    <h4 className="fs-5 text-muted mb-4 fw-lighter">We sent your username to your email address.</h4>
-    <p>If you don't receive the email within a few minutes, please check your spam folder before trying again.</p>
-    <Button className="btn-primary mb-3" onClick={() => { router.navigate(routes.account.username.forgot.index) }}>Resend</Button>
-    <div className="d-flex justify-content-center">
-      <Link className="text-decoration-none text-muted" url={routes.account.login}><FaArrowLeft/> Back to login</Link>
-    </div>
+      <h2 className="text-3xl">Please check your email</h2>
+      <h4 className="text-lg text-gray-500 mb-4">We sent your username to your email address.</h4>
+      <p>If you don't receive the email within a few minutes, please check your spam folder before trying again.</p>
+      <Button className="mb-3" onClick={() => { router.navigate(routes.account.username.forgot.index) }}>Resend</Button>
+      <div className="flex justify-center">
+        <Link className="no-underling text-gray-500" url={routes.account.login}><FaArrowLeft/> Back to login</Link>
+      </div>
     </motion.div>
   );
 }

@@ -88,38 +88,3 @@ a:active {
     filter: brightness(125%);
   }
 }
-
-
-.form-floating {
-  label {
-    opacity: 0.85;
-    line-height: 1.5rem;
-  }
-  &.floating-label-fixed {
-    label {
-      transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
-    }
-    .k-input input {
-      padding-top: 1.625rem;
-      padding-bottom: 0.625rem;
-      padding-left: 0.75rem;
-    }
-
-    .k-input-inner {
-      padding-top: 1.625rem;
-      padding-bottom: 0.625rem;
-      padding-left: 0.75rem;
-    }
-  }
-}
-
-.dropdown-toggle::after {
-  display: none !important;
-}
-
-@media (min-width: 992px) { /* 'lg' breakpoint in Bootstrap */
-  .col-lg-1-5 {
-    flex: 0 0 12.5%;
-    max-width: 12.5%;
-  }
-}
