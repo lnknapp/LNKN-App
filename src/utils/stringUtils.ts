@@ -11,7 +11,7 @@ export function toCapitalCase(str: string): string {
 
 /**
  * Converts a string to camelCase.
- * 
+ *
  * @param str - The string to convert.
  * @returns The camelCase version of the input string.
  */
@@ -48,7 +48,7 @@ export function toCamelCase(str: string): string {
 
 /**
  * Formats a camelCase string into a readable format.
- * 
+ *
  * @param str - The camelCase string to format.
  * @returns The formatted string.
  */
@@ -65,7 +65,7 @@ export const formatCamelCaseToReadable = (str: string): string => {
 
 /**
  * Checks if a given value is a number.
- * 
+ *
  * @param value - The value to check.
  * @returns A boolean indicating whether the value is a number or not.
  */
@@ -75,7 +75,7 @@ export function isNumber(value: string): boolean {
 
 /**
  * Converts a string to title case.
- * 
+ *
  * @param str - The string to convert.
  * @returns The converted string in title case.
  */
@@ -121,3 +121,8 @@ export function generateRandomString(size: number) {
 
   return result;
 }
+
+export const getInitials = (name: string) => {
+  const initials = name.split(' ').map(word => word[0]).join('');
+  return initials.toUpperCase();
+};

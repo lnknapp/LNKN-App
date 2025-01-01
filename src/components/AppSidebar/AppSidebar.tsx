@@ -1,15 +1,10 @@
 import style from './AppSidebar.module.scss'
-import itemStyle from './AppSidebarItem.module.scss'
-import { FaFile, FaCog, FaSignOutAlt, FaDashcube, FaLink, FaChartLine } from 'react-icons/fa'
+import { FaFile, FaDashcube, FaLink, FaChartLine } from 'react-icons/fa'
 import AppSidebarItem from './AppSidebarItem'
 import { Link } from '../link'
 import { routes } from '../../app/routes'
-import { UserService } from '../../services'
+import { UserDropdown } from '../UserDropdown'
 export const AppSidebar = () => {
-
-  const handleSignOut = () => {
-    UserService.signout();
-  };
 
   return (
     <nav id="main-menu" className={`${style.sidebar}`}>
@@ -23,8 +18,7 @@ export const AppSidebar = () => {
         <AppSidebarItem to="/analytics" icon={<FaChartLine className={style.icon} />} label="Analytics" />
       </div>
       <div className={`${style.sidebarFooter} py-3`}>
-        <AppSidebarItem to="/settings" icon={<FaCog className={`${style.icon}`} />} label="Settings" className={itemStyle.footer}/>
-        <AppSidebarItem icon={<FaSignOutAlt className={style.icon} />} label="Sign Out" onClick={handleSignOut} />
+        <UserDropdown />
       </div>
     </nav>
   )

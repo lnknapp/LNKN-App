@@ -21,8 +21,8 @@ export function Button({ isLoading, type, className, size, children, onClick, va
       color={variant}
       ref={ref}
       size={size}
-      onClick={onClick}
-      className={`btn w-full ${className}`}
+      onPress={onClick}
+      className={`btn ${className}`}
       style={{padding: "0.5rem 0.75rem"}}
     >
       {children}

@@ -28,9 +28,10 @@
 }
 
 .sidebarFooter {
+  margin: 0.7rem 2rem;
   display: flex;
   flex-direction: column;
-  // border-top: 1px solid #7a7a7a;
+  align-items: start;
 }
 
 .icon {

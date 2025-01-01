@@ -1,10 +1,16 @@
 import { useSetPageTitle } from "../../hooks";
 import { Button } from "../../components";
 import { router, routes } from "../../app/routes";
+import { usePageActions } from "../BasePageLayout";
 
 export function PagesIndexPage() {
 
   useSetPageTitle("Pages");
+  usePageActions(
+    <Button onClick={() => {}}>
+      Add Page
+    </Button>
+  , []);
 
   return (
     <div>
