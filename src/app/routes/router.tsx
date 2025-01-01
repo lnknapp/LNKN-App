@@ -1,6 +1,7 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 import Root from "../../root";
 import * as Features from "../../features";
+import { Role } from "../../models";
 
 /**
  * The base router configuration for the application.
@@ -21,6 +22,35 @@ const browserRouter = createBrowserRouter([
         path: "",
         element: <Features.HomePage />,
       },
+      //Pages
+      {
+        path: "pages",
+        element: (
+          <Features.SecurityOutlet
+            roles={[
+              Role.administrator
+            ]}
+          >
+            <Outlet />
+          </Features.SecurityOutlet>
+        ),
+        children: [
+          {
+            path: "",
+            element: <Features.PagesIndexLayout />,
+            children: [
+              {
+                path: "",
+                element: <Features.PagesIndexPage />,
+              },
+              {
+                path: ":id",
+                element: <Features.PageDetailsPage />,
+              }
+            ]
+          }
+        ]
+      }
     ],
   },
   //Account
@@ -68,9 +98,6 @@ const browserRouter = createBrowserRouter([
     ],
   },
 
-  //Pages
-  {
-  }
 ]);
 
 /**

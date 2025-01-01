@@ -1,4 +1,4 @@
-import PageLayout from "../PageLayout";
+import PageLayout from "../BasePageLayout";
 import AppLayout from "../AppLayout";
 
 interface ErrorPageProps {

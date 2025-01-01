@@ -5,7 +5,6 @@ import AppSidebarItem from './AppSidebarItem'
 import { Link } from '../link'
 import { routes } from '../../app/routes'
 import { UserService } from '../../services'
-
 export const AppSidebar = () => {
 
   const handleSignOut = () => {
@@ -19,7 +18,7 @@ export const AppSidebar = () => {
       </Link>
       <div className={`${style.sidebarLinks} py-3`}>
         <AppSidebarItem to={routes.home} icon={<FaDashcube className={style.icon} />} label="Dashboard" />
-        <AppSidebarItem to="/profile" icon={<FaFile className={style.icon} />} label="Pages" />
+        <AppSidebarItem to={routes.pages.index} icon={<FaFile className={style.icon} />} label="Pages" />
         <AppSidebarItem to="/links" icon={<FaLink className={style.icon} />} label="Links" />
         <AppSidebarItem to="/analytics" icon={<FaChartLine className={style.icon} />} label="Analytics" />
       </div>

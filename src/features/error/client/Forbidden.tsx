@@ -1,5 +1,5 @@
 import AppLayout from '../../AppLayout';
-import PageLayout from '../../PageLayout';
+import PageLayout from '../../BasePageLayout';
 import { routes } from '../../../app/routes';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useSetPageTitle } from '../../../hooks';

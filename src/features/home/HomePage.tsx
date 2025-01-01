@@ -1,7 +1,7 @@
-import { PageLayout } from "../PageLayout";
+import { BasePageLayout } from "../BasePageLayout";
 import { UserService } from "../../services";
 import { useSetPageTitle } from "../../hooks";
-import { Avatar } from "@nextui-org/react";
+import { Card, ProgressBar } from '@tremor/react';
 
 export function HomePage() {
 
@@ -11,19 +11,23 @@ export function HomePage() {
   if (!UserService.isSignedIn()) return <></>;
 
   return (
-    <PageLayout>
+    <BasePageLayout>
       <div>
-        <p className="text-6xl">blah blah blah</p>
-        <div className="flex gap-4 items-center">
-          <Avatar isBordered color="default" src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
-          <Avatar isBordered color="primary" src="https://i.pravatar.cc/150?u=a04258a2462d826712d" />
-          <Avatar isBordered color="secondary" src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
-          <Avatar isBordered color="success" src="https://i.pravatar.cc/150?u=a04258114e29026302d" />
-          <Avatar isBordered color="warning" src="https://i.pravatar.cc/150?u=a04258114e29026702d" />
-          <Avatar isBordered color="danger" src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
-        </div>
+        <Card className="max-w-md">
+          <h4 className="text-tremor-default text-tremor-content dark:text-dark-tremor-content">
+            Sales
+          </h4>
+          <p className="text-tremor-metric font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">
+            $71,465
+          </p>
+          <p className="mt-4 flex items-center justify-between text-tremor-default text-tremor-content dark:text-dark-tremor-content">
+            <span>32% of annual target</span>
+            <span>$225,000</span>
+          </p>
+          <ProgressBar value={32} className="mt-2" />
+        </Card>
       </div>
-    </PageLayout>
+    </BasePageLayout>
   );
 }
 
