@@ -8,22 +8,24 @@ interface ButtonProps extends PropsWithChildren {
   className?: string;
   children?: React.ReactNode;
   onClick?: (e?: any) => void;
-  variant?: "default" | "primary" | "secondary" | "success" | "warning" | "danger";
+  color?: "default" | "primary" | "secondary" | "success" | "warning" | "danger";
+  variant?: "solid" | "faded" | "bordered" | "light" | "flat" | "ghost" | "shadow";
   ref?: React.RefObject<HTMLButtonElement>;
 }
 
-export function Button({ isLoading, type, className, size, children, onClick, variant, ref }: Readonly<ButtonProps>) {
+export function Button({ isLoading, type, className, size, children, onClick, color, variant, ref }: Readonly<ButtonProps>) {
   return (
 
     <NextButton
       isLoading={isLoading}
       type={type}
-      color={variant}
+      color={color}
+      variant={variant}
       ref={ref}
       size={size}
       onPress={onClick}
       className={`btn ${className}`}
-      style={{padding: "0.5rem 0.75rem"}}
+      style={{padding: "0.5rem 0.75rem", fontWeight: 600}}
     >
       {children}
     </NextButton>
@@ -34,5 +36,6 @@ Button.defaultProps = {
   showSpinner: false,
   type: "button",
   size: "sm",
-  variant: "primary"
+  color: "primary",
+  variant: "solid",
 }

@@ -26,13 +26,7 @@ const browserRouter = createBrowserRouter([
       {
         path: "pages",
         element: (
-          <Features.SecurityOutlet
-            roles={[
-              Role.administrator
-            ]}
-          >
-            <Outlet />
-          </Features.SecurityOutlet>
+          <Outlet />
         ),
         children: [
           {
@@ -48,6 +42,68 @@ const browserRouter = createBrowserRouter([
                 element: <Features.PageDetailsPage />,
               }
             ]
+          }
+        ]
+      },
+      // Analytics
+      {
+        path: "analytics",
+        element: (
+          <Features.SecurityOutlet
+            roles={[
+              Role.administrator
+            ]}
+          >
+            <Outlet />
+          </Features.SecurityOutlet>
+        ),
+        children: [
+          {
+            path: "",
+            element: <Features.AnalyticsLayout />,
+            children: [
+              {
+                path: "",
+                element: <Features.AnalyticsIndexPage />,
+              }
+            ]
+          }
+        ]
+      },
+      // Settings
+      {
+        path: "",
+        element: (
+          <Features.SettingsLayout />
+        ),
+        children: [
+          {
+            path: "settings/account",
+            element: <Features.AccountSettingsPage />,
+          },
+          {
+            path: "settings/profile",
+            element: <Features.ProfileSettingsPage />,
+          },
+          {
+            path: "settings/security",
+            element: <Features.SecuritySettingsPage />,
+          },
+          {
+            path: "settings/appearance",
+            element: <Features.AppearanceSettingsPage />,
+          },
+          {
+            path: "settings/notifications",
+            element: <Features.NotificationsSettingsPage />,
+          },
+          {
+            path: "settings/billing",
+            element: <Features.BillingSettingsPage />,
+          },
+          {
+            path: "settings/integrations",
+            element: <Features.IntegrationsSettingsPage />,
           }
         ]
       }

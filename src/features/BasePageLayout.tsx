@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from "
 import style from './BasePageLayout.module.scss';
 import { usePageTitle } from "../hooks";
 import { useLocation } from "react-router-dom";
+import { FaBars } from "react-icons/fa";
 
 function PageTitle() {
   const { title } = usePageTitle();
@@ -46,11 +47,14 @@ export function BasePageLayout({ children }: Readonly<BasePageLayoutProps>) {
   const [actions, setActions] = useState(<></>);
   const location = useLocation();
   const path = location.pathname;
+  const toggleSidebar = () => {
+
+  };
 
   // Reset actions when location changes
   useEffect(() => {
     return () => setActions(() => {
-      return <></>;
+      return <div></div>;
     });
   }, [path]);
 
@@ -59,10 +63,20 @@ export function BasePageLayout({ children }: Readonly<BasePageLayoutProps>) {
       value={useMemo(() => ({ actions, setActions }), [actions, setActions])}
     >
       <div className={`${style.pageHeader}`}>
-        <PageTitle />
-        {actions}
+        <div className={`flex items-center justify-between container mx-auto h-full p-[1rem]`}>
+          <div className="flex items-center">
+            <button
+                className="md:hidden mr-6"
+                onClick={toggleSidebar}
+              >
+              <FaBars />
+            </button>
+            <PageTitle />
+          </div>
+          {actions}
+        </div>
       </div>
-      <article className={`${style.pageContent}`}>
+      <article className={`${style.pageContent} container mx-auto`}>
         {children}
       </article>
     </PageActionsContext.Provider>

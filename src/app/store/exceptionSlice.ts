@@ -20,7 +20,7 @@ const errorSlice = createSlice({
     setInformation: (state, action) => {
       state.message = action.payload;
       state.show = true;
-      state.level = ExceptionLevel.information;
+      state.level = ExceptionLevel.primary;
     },
     setWarning: (state, action) => {
       state.message = action.payload;
@@ -30,7 +30,7 @@ const errorSlice = createSlice({
     setError: (state, action) => {
       state.message = action.payload;
       state.show = true;
-      state.level = ExceptionLevel.error;
+      state.level = ExceptionLevel.danger;
     },
     setSuccess: (state, action) => {
       state.message = action.payload;

@@ -36,6 +36,18 @@ export const routes = {
       },
     },
   },
+  settings: {
+    account: "/settings/account",
+    profile: "/settings/profile",
+    security: "/settings/security",
+    appearance: "/settings/appearance",
+    notifications: "/settings/notifications",
+    integrations: "/settings/integrations",
+    billing: "/settings/billing",
+  },
+  analytics: {
+    index: "/analytics",
+  },
   log: {
     index: "/log",
   },

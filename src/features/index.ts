@@ -6,3 +6,5 @@ export * from './account';
 export * from './error';
 export * from './home';
 export * from './pages';
+export * from './analytics';
+export * from './settings';

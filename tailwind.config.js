@@ -17,16 +17,21 @@ module.exports = {
       },
       colors: {
         primary: {
-          DEFAULT: '#6748C3',
+          DEFAULT: '#022213',
           light: '#EACAFF',
+          dark: '#1E40AF',
+        },
+        secondary: {
+          DEFAULT: '#9DCE31',
+          light: '#F9BD9C',
           dark: '#1E40AF',
         },
         tremor: {
           brand: {
             faint: '#F9BD9C',
-            muted: '#EACAFF',
+            muted: colors.green[100],
             subtle: colors.blue[400],
-            DEFAULT: '#6748C3',
+            DEFAULT: '#022213',
             emphasis: colors.blue[700],
             inverted: colors.white,
           },

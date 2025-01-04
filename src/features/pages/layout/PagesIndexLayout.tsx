@@ -5,7 +5,7 @@ export function PagesIndexLayout() {
   return (
     <BasePageLayout>
       <Outlet />
-    </BasePageLayout >
+    </BasePageLayout>
   );
 }
 

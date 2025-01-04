@@ -27,6 +27,7 @@ export function HomePage() {
           <ProgressBar value={32} className="mt-2" />
         </Card>
       </div>
+
     </BasePageLayout>
   );
 }
