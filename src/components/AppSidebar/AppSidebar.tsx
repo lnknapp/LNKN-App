@@ -17,7 +17,6 @@ export const AppSidebar = () => {
         LNKN
       </Link>
       <div className={`${style.sidebarLinks} py-3`}>
-        {/* add a heading that says MENU */}
         <h3 className={`${style.heading} text-white text-xs font-semibold`}>MENU</h3>
         <AppSidebarItem to={routes.home} icon={<FaDashcube className={style.icon} size={20}/>} label="Dashboard" />
         <AppSidebarItem to={routes.pages.index} icon={<FaLink className={style.icon} size={20} />} label="Pages" />

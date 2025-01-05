@@ -63,7 +63,7 @@ export function BasePageLayout({ children }: Readonly<BasePageLayoutProps>) {
       value={useMemo(() => ({ actions, setActions }), [actions, setActions])}
     >
       <div className={`${style.pageHeader}`}>
-        <div className={`flex items-center justify-between container mx-auto h-full p-[1rem]`}>
+        <div className={`flex items-center justify-between container mx-auto h-full p-[2rem]`}>
           <div className="flex items-center">
             <button
                 className="md:hidden mr-6"

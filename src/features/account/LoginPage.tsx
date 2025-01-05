@@ -82,7 +82,7 @@ export function LoginPage() {
               </div>
 
               <div className="w-full">
-                <Button color="secondary" className='py-2 w-full' type="submit" isLoading={showSpinner}>Login</Button>
+                <Button color="primary" className='py-2 w-full' type="submit" isLoading={showSpinner}>Login</Button>
               </div>
               <div className="mt-3 w-full">
                 <span>Don't have an account? <Link className="no-underline text-primary" url={routes.account.register.index}>Sign up</Link>.</span>
