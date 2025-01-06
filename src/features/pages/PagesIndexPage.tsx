@@ -12,15 +12,18 @@ export function PagesIndexPage() {
   const pageService = new PageService();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedPageType, setSelectedPageType] = useState<PageType | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  const { value: pages, loading, error } = useAsync(() => pageService.getAll(), []);
+  const { value: pages, loading, error } = useAsync(() => pageService.getAll(), [refreshKey]);
 
   useSetPageTitle("Pages");
   usePageActions(
-    <NewPageDropdown onSelectPageType={(pageType: PageType) => {
-      setSelectedPageType(pageType);
-      onOpen();
-    }} />
+    <NewPageDropdown
+      onSelectPageType={(pageType: PageType) => {
+        setSelectedPageType(pageType);
+        onOpen();
+      }}
+    />
   );
 
   if (loading) return <SkeletonPageCard />;
@@ -34,7 +37,7 @@ export function PagesIndexPage() {
       <section key={type}>
         <h2 className="text-2xl font-bold mb-4">{title}</h2>
         {filteredPages.map((page) => (
-          <PageCard page={page}/>
+          <PageCard key={page.id} page={page} onDelete={() => setRefreshKey(oldKey => oldKey + 1)}/>
         ))}
       </section>
     );
@@ -54,7 +57,11 @@ export function PagesIndexPage() {
         {renderSection(PageType.Album, "Album")}
         {renderSection(PageType.Event, "Event")}
       </div>
-      <NewPageModal isOpen={isOpen} onOpenChange={onOpenChange} selectedPageType={selectedPageType} />
+      <NewPageModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        selectedPageType={selectedPageType}
+      />
     </>
   );
 }

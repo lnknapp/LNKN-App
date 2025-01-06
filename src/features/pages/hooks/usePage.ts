@@ -4,7 +4,7 @@ import { Page, PageType } from '../../../data/entities/pages';
 import { PageService, UserService } from '../../../services';
 import { showErrorMessage } from '../../../utils';
 
-export const useCreatePage = () => {
+export const usePage = () => {
   const pageService = new PageService();
   const userInfo = UserService.getUserInfo();
   const navigate = useNavigate();
@@ -45,10 +45,29 @@ export const useCreatePage = () => {
     }
   };
 
+  const handleDeletePage = async (pageId: number) => {
+    try {
+      await pageService.delete(pageId);
+      navigate('/pages');
+    } catch (error) {
+      showErrorMessage(`Error occurred while trying to execute delete: ${error}`);
+    }
+  };
+
+  const handleUpdatePage = async (page: Page) => {
+    try {
+      await pageService.update(page.id, page);
+    } catch (error) {
+      showErrorMessage(`Error occurred while trying to execute update: ${error}`);
+    }
+  }
+
   return {
     currentStep,
     handleNext,
     handleBack,
     handleCreatePage,
+    handleDeletePage,
+    handleUpdatePage,
   };
 };

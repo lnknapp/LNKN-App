@@ -1,19 +1,22 @@
-import { useNavigate } from "react-router-dom";
-import { routes } from "../../app/routes";
 import { Button } from "@nextui-org/react";
-import { useAsync, useSetPageTitle, useUrlParams } from "../../hooks";
-import { PageService } from "../../services";
+import { routes } from "../../app/routes";
 import { usePageActions } from "../BasePageLayout";
+import { PageContents } from "./components/PageContents";
+import { useNavigate } from "react-router-dom";
+import { usePageDetails } from "./components/PageDetailsContext";
+import { usePage } from "./hooks/usePage";
+import { useSetPageTitle } from "../../hooks";
+import { Formik } from "formik";
+import * as yup from "yup";
+import { useRef } from "react";
 
 export function PageDetailsPage() {
-
-  const pageId = parseInt(useUrlParams("id"));
-  const pageService = new PageService();
   const navigate = useNavigate();
+  const { page, updatePageKey, setPage } = usePageDetails();
+  const { handleUpdatePage } = usePage();
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
 
-  const { value: page, loading, error } = useAsync(() => pageService.get(pageId), [pageId]);
-
-  useSetPageTitle(`Page: ${page?.name}`, [pageId]);
+  useSetPageTitle(`${page?.name}`, [page]);
   usePageActions(
     <div className="flex justify-end space-x-2">
       <Button
@@ -30,7 +33,11 @@ export function PageDetailsPage() {
         color="primary"
         variant="ghost"
         radius="full"
-        onPress={() => navigate(routes.pages.index)}
+        onPress={() => {
+          if (submitButtonRef.current) {
+            submitButtonRef.current.click();
+          }
+        }}
       >
         Save
       </Button>
@@ -39,17 +46,37 @@ export function PageDetailsPage() {
         color="primary"
         variant="solid"
         radius="full"
-        onPress={() => navigate(routes.pages.index)}
+        onPress={() => {
+          updatePageKey("isPublished", !page.isPublished);
+          handleUpdatePage({ ...page, isPublished: !page.isPublished });
+        }}
       >
-        Publish
+        {page.isPublished ? "Unpublish" : "Publish"}
       </Button>
     </div>
-  )
+  ,[page, submitButtonRef]);
+
+  const validationSchema = yup.object().shape({
+    name: yup.string().required("Name is required"),
+  });
 
   return (
-    <div>
-
-    </div>
+    <Formik
+      initialValues={page}
+      validationSchema={validationSchema}
+      onSubmit={(values) => {
+        handleUpdatePage(values);
+        setPage(values);
+      }}
+      enableReinitialize
+    >
+      {({ handleSubmit }) => (
+        <form onSubmit={handleSubmit}>
+          <PageContents />
+          <button type="submit" ref={submitButtonRef} style={{ display: 'none' }} />
+        </form>
+      )}
+    </Formik>
   );
 }
 

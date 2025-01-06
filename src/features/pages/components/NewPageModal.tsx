@@ -2,7 +2,7 @@ import { Modal, ModalContent, ModalBody } from '@nextui-org/react';
 import { PageType } from '../../../data/entities/pages';
 import { OptionSelection } from './OptionSelection';
 import { PageOption } from './PageOption';
-import { useCreatePage } from '../hooks/useCreatePage';
+import { usePage } from '../hooks/usePage';
 
 interface NewPageModalProps {
   isOpen: boolean;
@@ -11,7 +11,7 @@ interface NewPageModalProps {
 }
 
 export function NewPageModal({ isOpen, onOpenChange, selectedPageType }: NewPageModalProps) {
-  const { handleNext, handleCreatePage } = useCreatePage();
+  const { handleNext, handleCreatePage } = usePage();
 
   const renderContent = () => {
     return (

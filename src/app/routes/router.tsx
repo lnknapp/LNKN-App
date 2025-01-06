@@ -39,7 +39,13 @@ const browserRouter = createBrowserRouter([
               },
               {
                 path: ":id",
-                element: <Features.PageDetailsPage />,
+                element: <Features.PageLayout />,
+                children: [
+                  {
+                    path: "",
+                    element: <Features.PageDetailsPage />,
+                  }
+                ]
               }
             ]
           }
