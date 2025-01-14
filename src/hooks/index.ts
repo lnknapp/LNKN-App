@@ -6,6 +6,5 @@ export * from './useAppSelector';
 export * from './useAsync';
 export * from './useSpinner';
 export * from './useUrlParams';
-export * from './useCRUDHandlers';
 export * from './useFormChanged';
 export * from './usePageTitle';

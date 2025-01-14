@@ -5,7 +5,7 @@ import { useRegistration } from "./hooks";
 import { routes } from "../../app/routes";
 import { motion } from 'framer-motion';
 import { RegisterRequest } from '../../models';
-import { FloatingLabel, Form } from 'react-bootstrap';
+import { Form, Input, Checkbox } from "@nextui-org/react";
 
 export function RegisterPage() {
 
@@ -35,7 +35,8 @@ export function RegisterPage() {
       .matches(/[^A-Za-z0-9]/, "Password must contain at least one non-alphanumeric character"),
     confirmPassword: yup.string()
       .required("Confirm Password is required")
-      .oneOf([yup.ref('password')], 'Passwords do not match')
+      .oneOf([yup.ref('password')], 'Passwords do not match'),
+    termsAndConditions: yup.boolean().required("You must agree to the Terms and Conditions")
   });
 
   return (
@@ -45,15 +46,16 @@ export function RegisterPage() {
       exit={{ y: "50%", opacity: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut"}}
     >
-      <h2 className="fs-1">Create Your Account</h2>
-      <h4 className="fs-5 text-muted mb-4 fw-lighter">Register now and get started!</h4>
+      <h2 className="text-3xl">Create Your Account</h2>
+      <h4 className="text-lg text-gray-500 mb-4">Register now and get started!</h4>
       <Formik
         validationSchema={validationSchema}
         initialValues={{
           email: '',
           userName: '',
           password: '',
-          confirmPassword: ''
+          confirmPassword: '',
+          termsAndConditions: false
         }}
         onSubmit={async (values) => {
           handleSubmit({
@@ -66,74 +68,70 @@ export function RegisterPage() {
       >
         {({ values, handleSubmit, handleChange, touched, errors }) => {
           return (
-            <Form onSubmit={handleSubmit} noValidate>
-              <div className="row mb-3">
-                <div className="col col-24">
-                  <FloatingLabel label="Email" className="mb-3">
-                    <Form.Control
-                        type="email"
-                        name="email"
-                        placeholder='Email'
-                        value={values.email}
-                        onChange={handleChange}
-                        isInvalid={touched.email && !!errors.email}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.email}
-                      </Form.Control.Feedback>
-                  </FloatingLabel>
-                </div>
-                <div className="col col-24">
-                  <FloatingLabel label="Username" className="mb-3">
-                    <Form.Control
-                        type="string"
-                        name="userName"
-                        placeholder='Username'
-                        value={values.userName}
-                        onChange={handleChange}
-                        isInvalid={touched.userName && !!errors.userName}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.userName}
-                      </Form.Control.Feedback>
-                  </FloatingLabel>
-                </div>
-                <div className="col col-24">
-                  <FloatingLabel label="Password" className="mb-3">
-                    <Form.Control
-                        type="password"
-                        name="password"
-                        placeholder='Password'
-                        value={values.password}
-                        onChange={handleChange}
-                        isInvalid={touched.password && !!errors.password}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.password}
-                      </Form.Control.Feedback>
-                  </FloatingLabel>
-                </div>
-                <div className="col col-24">
-                  <FloatingLabel label="Confirm Password" className="mb-3">
-                    <Form.Control
-                        type="password"
-                        name="confirmPassword"
-                        placeholder='Confirm Password'
-                        value={values.confirmPassword}
-                        onChange={handleChange}
-                        isInvalid={touched.confirmPassword && !!errors.confirmPassword}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.confirmPassword}
-                      </Form.Control.Feedback>
-                  </FloatingLabel>
-                </div>
-                <div className="col">
-                  <Button type="submit" showSpinner={showSpinner}>Register</Button>
-                  <div className="d-flex justify-content-start mt-3">
-                    <span className="text-muted">Already have an account? <Link className="text-decoration-none" url={routes.account.login}>Login</Link>.</span>
-                  </div>
-                </div>
+            <Form onSubmit={handleSubmit}>
+              <div className="mb-3 w-full">
+                <Input
+                  type="string"
+                  label="Email"
+                  name="email"
+                  errorMessage={errors.email}
+                  value={values.email}
+                  onChange={handleChange}
+                  isInvalid={touched.email && !!errors.email}
+                  variant="bordered"
+                />
+              </div>
+              <div className="mb-3 w-full">
+                <Input
+                  type="string"
+                  label="Username"
+                  name="userName"
+                  errorMessage={errors.userName}
+                  value={values.userName}
+                  onChange={handleChange}
+                  isInvalid={touched.userName && !!errors.userName}
+                  variant="bordered"
+                />
+              </div>
+              <div className="mb-3 w-full">
+                <Input
+                  type="password"
+                  label="Password"
+                  name="password"
+                  errorMessage={errors.password}
+                  value={values.password}
+                  onChange={handleChange}
+                  isInvalid={touched.password && !!errors.password}
+                  variant="bordered"
+                />
+              </div>
+              <div className="mb-3 w-full">
+                <Input
+                  type="password"
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  errorMessage={errors.confirmPassword}
+                  value={values.confirmPassword}
+                  onChange={handleChange}
+                  isInvalid={touched.confirmPassword && !!errors.confirmPassword}
+                  variant="bordered"
+                />
+              </div>
+              <div className="mb-3 w-full">
+                <Checkbox
+                  type="checkbox"
+                  id="termsAndConditions"
+                  isSelected={values.termsAndConditions}
+                  onValueChange={handleChange}
+                >
+                  I agree to the <Link className="no-underline text-primary" url={"routes.terms"}>Terms and Conditions</Link>.
+                </Checkbox>
+              </div>
+              <div className="w-full">
+                <Button className='py-2 w-full' type="submit" isLoading={showSpinner}>Register</Button>
+              </div>
+              <div className="mt-3 w-full">
+                <span className="text-muted">Already have an account? <Link className="no-underline text-primary" url={routes.account.login}>Login</Link>.</span>
               </div>
             </Form>
           )

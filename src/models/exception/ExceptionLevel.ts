@@ -1,5 +1,5 @@
 export enum ExceptionLevel {
-  information, warning, error, success
+  default, primary, secondary, success, warning, danger
 }
 
 export default ExceptionLevel;

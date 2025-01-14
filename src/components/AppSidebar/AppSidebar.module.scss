@@ -5,19 +5,20 @@
   flex-direction: column;
   height: 100vh;
   width: 20rem;
-  background-color: transparent;
+  background-color: $primary;
   border-right: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .sidebarHeader {
-  height: 5rem;
+  height: 6rem;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
   font-weight: bold;
   background-color: transparent;
-  color: black;
+  color: white;
   // border-bottom: 1px solid #7a7a7a;
 }
 
@@ -30,9 +31,62 @@
 .sidebarFooter {
   display: flex;
   flex-direction: column;
-  // border-top: 1px solid #7a7a7a;
 }
 
 .icon {
   margin-right: 1rem;
+}
+
+.heading {
+  font-size: 1rem;
+  padding: 0.7rem 2.3rem;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 2.3rem;
+  margin: 0.2rem 0;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: all ease 0.3s;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 7px;
+    height: 100%;
+    background-color: transparent;
+    border-radius: 0 5px 5px 0;
+    transition: background-color 0.3s;
+  }
+
+  &:hover {
+    color: white;
+  }
+
+  &.activeLink {
+    color: white;
+
+    &::before {
+      background-color: $secondary;
+    }
+
+    .icon {
+      color: $secondary;
+    }
+
+    &.footer {
+      background-color: rgba(0, 0, 0, 0.05) !important;
+      color: #343a40;
+    }
+  }
 }

@@ -23,7 +23,7 @@ export const store = configureStore({
 store.subscribe(() => {
   // Saves in the local storage only the auth state;
   const storeObj = {
-    auth: store.getState().authentication,
+    authentication: store.getState().authentication,
     exceptions: {},
   }
   localStorage.setItem("reduxState", JSON.stringify(storeObj));

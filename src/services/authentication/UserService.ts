@@ -32,6 +32,7 @@ export class UserService extends BaseEntityService<UserModel, UserRepo, UserODat
 
   static readonly isInRole = (roleName: Role) => {
     const userInfo = this.getUserInfo();
+    if (userInfo?.roles === null || userInfo?.roles === undefined) return false;
     return !!userInfo && userInfo.roles.some(userRole => userRole.role?.name === roleName);
 
   }

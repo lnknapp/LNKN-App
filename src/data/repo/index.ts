@@ -2,6 +2,7 @@ export * from './account';
 export * from './authentication';
 export * from './common';
 export * from './references';
+export * from './pages';
 
 export * from './BaseRepository';
 export * from './BaseDataRepository';

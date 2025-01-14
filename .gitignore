@@ -38,3 +38,5 @@ kendo-ui-license.txt
 # extensions
 .hintrc
 .prettierrc
+
+.fake

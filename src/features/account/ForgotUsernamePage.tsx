@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useForgotUsername } from "./hooks";
 import { Button, Link } from "../../components";
 import { routes } from "../../app/routes";
-import { FloatingLabel, Form } from 'react-bootstrap';
+import { Input } from "@nextui-org/react";
 import { ForgotUsernameRequest } from '../../models';
 import { FaArrowLeft } from 'react-icons/fa';
 
@@ -22,8 +22,8 @@ export function ForgotUsernamePage() {
       exit={{ y: "50%", opacity: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut"}}
     >
-      <h2 className="fs-1">Forgot Username?</h2>
-      <h4 className="fs-5 text-muted mb-4 fw-lighter">No worries, we'll send you an email.</h4>
+      <h2 className="text-3xl">Forgot Username?</h2>
+      <h4 className="text-lg text-gray-500 mb-4">No worries, we'll send you an email.</h4>
       <Formik
         validationSchema={validationSchema}
           initialValues={{
@@ -37,31 +37,32 @@ export function ForgotUsernamePage() {
         >
           {({values, handleSubmit, handleChange, touched, errors}) => {
             return (
-              <Form onSubmit={handleSubmit}>
-                <div className="row">
-                  <div className="col col-24">
-                    <FloatingLabel label="Email" className="mb-3">
-                      <Form.Control
-                          type="email"
-                          name="email"
-                          placeholder='Email'
-                          value={values.email}
-                          onChange={handleChange}
-                          isInvalid={touched.email && !!errors.email}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {errors.email}
-                        </Form.Control.Feedback>
-                    </FloatingLabel>
-                  </div>
-                  <div className="col col-24 my-2">
-                    <Button type="submit" showSpinner={showSpinner}>Submit</Button>
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <Link className="text-decoration-none text-muted" url={routes.account.login}><FaArrowLeft/> Back to login</Link>
-                  </div>
+              <form onSubmit={handleSubmit} noValidate className="space-y-4">
+                <div>
+                  <Input
+                    type="string"
+                    label="Email"
+                    name="email"
+                    errorMessage={errors.email}
+                    value={values.email}
+                    onChange={handleChange}
+                    isInvalid={touched.email && !!errors.email}
+                    variant="bordered"
+                  />
                 </div>
-              </Form>
+                <Button
+                  type="submit"
+                  isLoading={showSpinner}
+                  className="py-2 w-full"
+                >
+                  Submit
+                </Button>
+                <div className="flex justify-center">
+                  <Link className="no-underline text-gray-500 flex items-center" url={routes.account.login}>
+                    <FaArrowLeft className="mr-2" /> <span>Back to login</span>
+                  </Link>
+                </div>
+              </form>
             );
           }}
         </Formik>

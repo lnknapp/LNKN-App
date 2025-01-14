@@ -7,8 +7,10 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./app/routes";
 import "hammerjs";
 import "./css/site.scss";
+import './index.css';
 import { ErrorBoundary } from "./features";
 import { PageTitleProvider } from "./hooks";
+import { NextUIProvider } from "@nextui-org/react";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -29,9 +31,11 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ErrorBoundary>
-        <PageTitleProvider>
-          <RouterProvider router={router} />
-        </PageTitleProvider>
+        <NextUIProvider>
+          <PageTitleProvider>
+            <RouterProvider router={router} />
+          </PageTitleProvider>
+        </NextUIProvider>
       </ErrorBoundary>
     </Provider>
   </React.StrictMode>

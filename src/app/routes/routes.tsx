@@ -4,28 +4,49 @@
 export const routes = {
   home: "/",
   account: {
-    index: "/account",
-    login: "/account/login",
+    login: "/login",
     register: {
-      index: "/account/register",
-      confirmation: "/account/register/confirmation",
+      index: "/register",
+      confirmation: "/register/confirmation",
     },
     username: {
       forgot: {
-        index: "/account/forgot-username",
-        confirmation: "/account/forgot-username/confirmation",
+        index: "/forgot-username",
+        confirmation: "/forgot-username/confirmation",
       },
     },
     password: {
       forgot: {
-        index: "/account/forgotPassword",
-        confirmation: "/account/forgotPasswordConfirmation",
+        index: "/forgot-password",
+        confirmation: "/forgot-password/confirmation",
       },
       reset: {
-        index: "/account/resetPassword",
-        confirmation: "/account/resetPasswordConfirmation",
+        index: "/reset-password",
+        confirmation: "/reset-password/confirmation",
       },
     },
+  },
+  pages: {
+    index: "/pages",
+    page: {
+      index: "/pages/:id",
+      links: {
+        index: "/pages/:id/links",
+        link: "/pages/:id/links/:linkId",
+      },
+    },
+  },
+  settings: {
+    account: "/settings/account",
+    profile: "/settings/profile",
+    security: "/settings/security",
+    appearance: "/settings/appearance",
+    notifications: "/settings/notifications",
+    integrations: "/settings/integrations",
+    billing: "/settings/billing",
+  },
+  analytics: {
+    index: "/analytics",
   },
   log: {
     index: "/log",

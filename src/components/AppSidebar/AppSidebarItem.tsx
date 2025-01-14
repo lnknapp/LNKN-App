@@ -1,15 +1,16 @@
 import { NavLink } from 'react-router-dom';
-import style from './AppSidebarItem.module.scss';
+import style from './AppSidebar.module.scss';
 
 interface AppSidebarItemProps {
   to?: string;
   icon: JSX.Element;
   label: string;
-  className?: string;
+  activeClassName?: string;
+  notActiveClassName?: string;
   onClick?: () => void;
 }
 
-const AppSidebarItem = ({ to, icon, label, className, onClick }: AppSidebarItemProps) => {
+const AppSidebarItem = ({ to, icon, label, activeClassName, notActiveClassName, onClick }: AppSidebarItemProps) => {
 
   if (onClick) {
     return (
@@ -20,7 +21,8 @@ const AppSidebarItem = ({ to, icon, label, className, onClick }: AppSidebarItemP
     );
   }
   return (
-    <NavLink to={to!} className={({ isActive }) => isActive ? `${style.link} ${style.activeLink} ${className}` : style.link}>
+    <NavLink to={to!} className={
+      ({ isActive }) => isActive ? `${style.link} ${style.activeLink} ${activeClassName}` : `${style.link} + ${notActiveClassName}`}>
       {icon}
       <span>{label}</span>
     </NavLink>

@@ -9,13 +9,13 @@ export interface AppLayoutProps extends React.PropsWithChildren {
 export function AppLayout(props: Readonly<AppLayoutProps>) {
 
   return (
-    <div id="main-wrapper" className="position-fixed d-flex flex-column w-100 h-100">
-      <div className="position-relative flex-grow-1">
-        <div className="position-absolute d-flex flex-row w-100 h-100">
+    <div id="main-wrapper" className="fixed flex flex-col w-full h-full">
+      <div className="relative grow">
+        <div className="absolute flex flex-row w-full h-full">
           {props.includeSidebar && <AppSidebar />}
-          <main id="main-content" role="main" className="flex-grow-1 h-100 mh-100 w-100 overflow-auto">
+          <main id="main-content" role="main" className="grow h-full mh-full w-full overflow-auto">
             <AnimatePresence>
-              <div key="exception" className="d-flex justify-content-center">
+              <div key="exception" className="flex justify-center">
                 <ExceptionMessage/>
               </div>
               <>

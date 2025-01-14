@@ -1,6 +1,7 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 import Root from "../../root";
 import * as Features from "../../features";
+import { Role } from "../../models";
 
 /**
  * The base router configuration for the application.
@@ -21,16 +22,107 @@ const browserRouter = createBrowserRouter([
         path: "",
         element: <Features.HomePage />,
       },
+      //Pages
+      {
+        path: "pages",
+        element: (
+          <Outlet />
+        ),
+        children: [
+          {
+            path: "",
+            element: <Features.PagesIndexLayout />,
+            children: [
+              {
+                path: "",
+                element: <Features.PagesIndexPage />,
+              },
+              {
+                path: ":id",
+                element: <Features.PageLayout />,
+                children: [
+                  {
+                    path: "",
+                    element: <Features.PageDetailsPage />,
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      // Analytics
+      {
+        path: "analytics",
+        element: (
+          <Features.SecurityOutlet
+            roles={[
+              Role.administrator
+            ]}
+          >
+            <Outlet />
+          </Features.SecurityOutlet>
+        ),
+        children: [
+          {
+            path: "",
+            element: <Features.AnalyticsLayout />,
+            children: [
+              {
+                path: "",
+                element: <Features.AnalyticsIndexPage />,
+              }
+            ]
+          }
+        ]
+      },
+      // Settings
+      {
+        path: "",
+        element: (
+          <Features.SettingsLayout />
+        ),
+        children: [
+          {
+            path: "settings/account",
+            element: <Features.AccountSettingsPage />,
+          },
+          {
+            path: "settings/profile",
+            element: <Features.ProfileSettingsPage />,
+          },
+          {
+            path: "settings/security",
+            element: <Features.SecuritySettingsPage />,
+          },
+          {
+            path: "settings/appearance",
+            element: <Features.AppearanceSettingsPage />,
+          },
+          {
+            path: "settings/notifications",
+            element: <Features.NotificationsSettingsPage />,
+          },
+          {
+            path: "settings/billing",
+            element: <Features.BillingSettingsPage />,
+          },
+          {
+            path: "settings/integrations",
+            element: <Features.IntegrationsSettingsPage />,
+          }
+        ]
+      }
     ],
   },
   //Account
   {
-    path: "account",
+    path: "",
     element: <Features.AccountPageLayout />,
     errorElement: <Features.ErrorPage />,
     children: [
       {
-        path: "",
+        path: "login",
         element: <Features.LoginPage />,
       },
       {
@@ -38,19 +130,15 @@ const browserRouter = createBrowserRouter([
         element: <Features.RegisterPage />,
       },
       {
-        path: "login",
-        element: <Features.LoginPage />,
-      },
-      {
         path: `login?returnUrl=:returnUrl`,
         element: <Features.LoginPage />,
       },
       {
-        path: "forgotPassword",
+        path: "forgot-password",
         element: <Features.ForgotPasswordPage />,
       },
       {
-        path: "forgotPasswordConfirmation",
+        path: "forgot-password/confirmation",
         element: <Features.ForgotPasswordConfirmationPage />,
       },
       {
@@ -62,15 +150,33 @@ const browserRouter = createBrowserRouter([
         element: <Features.ForgotUsernameConfirmationPage />,
       },
       {
-        path: "resetPassword",
+        path: "reset-password",
         element: <Features.ResetPasswordPage />,
       },
       {
-        path: "resetPasswordConfirmation",
+        path: "reset-password/confirmation",
         element: <Features.ResetPasswordConfirmationPage />,
       },
     ],
   },
+  // Public Page
+  {
+    // The path for the public pages will be something like "localhost:3000/username/page-slug" or "localhost:3000/username".
+    path: "",
+    element: <Outlet />,
+    children: [
+      {
+        path: ":username",
+        element: <Features.PublicPage />,
+      },
+      {
+        path: ":username/:slug",
+        element: <Features.PublicPage />,
+      },
+    ],
+
+  }
+
 ]);
 
 /**
