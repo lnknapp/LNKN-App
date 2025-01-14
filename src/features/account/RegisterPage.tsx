@@ -72,8 +72,8 @@ export function RegisterPage() {
               <div className="mb-3 w-full">
                 <Input
                   type="string"
-                  label="Email or Username"
-                  name="emailOrUsername"
+                  label="Email"
+                  name="email"
                   errorMessage={errors.email}
                   value={values.email}
                   onChange={handleChange}

@@ -159,6 +159,23 @@ const browserRouter = createBrowserRouter([
       },
     ],
   },
+  // Public Page
+  {
+    // The path for the public pages will be something like "localhost:3000/username/page-slug" or "localhost:3000/username".
+    path: "",
+    element: <Outlet />,
+    children: [
+      {
+        path: ":username",
+        element: <Features.PublicPage />,
+      },
+      {
+        path: ":username/:slug",
+        element: <Features.PublicPage />,
+      },
+    ],
+
+  }
 
 ]);
 
