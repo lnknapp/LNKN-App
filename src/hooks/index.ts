@@ -7,4 +7,4 @@ export * from './useAsync';
 export * from './useSpinner';
 export * from './useUrlParams';
 export * from './useFormChanged';
-export * from './usePageTitle';
+export * from './usePageHeader';

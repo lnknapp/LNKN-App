@@ -1,12 +1,12 @@
 import PageLayout from '../../BasePageLayout';
 import { routes } from '../../../app/routes';
 import { FaArrowLeft } from 'react-icons/fa';
-import { useSetPageTitle } from '../../../hooks';
+import { useSetPageHeader } from '../../../hooks';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../components';
 
 export function Forbidden() {
-  useSetPageTitle("");
+  useSetPageHeader("");
   const navigate = useNavigate();
   return (
     <PageLayout>

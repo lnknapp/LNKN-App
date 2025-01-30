@@ -1,11 +1,11 @@
 import { BasePageLayout } from "../BasePageLayout";
 import { UserService } from "../../services";
-import { useSetPageTitle } from "../../hooks";
+import { useSetPageHeader } from "../../hooks";
 import { Card, ProgressBar } from '@tremor/react';
 
 export function HomePage() {
 
-  useSetPageTitle("Dashboard");
+  useSetPageHeader("Dashboard");
 
   // Avoid calling the API if the user is not signed in
   if (!UserService.isSignedIn()) return <></>;

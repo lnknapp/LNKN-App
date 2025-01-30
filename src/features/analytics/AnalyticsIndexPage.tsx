@@ -1,8 +1,8 @@
-import { useSetPageTitle } from "../../hooks";
+import { useSetPageHeader } from "../../hooks";
 
 export function AnalyticsIndexPage() {
 
-  useSetPageTitle('Analytics');
+  useSetPageHeader('Analytics');
 
   return (
     <section>

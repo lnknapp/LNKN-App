@@ -30,6 +30,8 @@ export const routes = {
     index: "/pages",
     page: {
       index: "/pages/:id",
+      appearance: "/pages/:id/appearance",
+      settings: "/pages/:id/settings",
       links: {
         index: "/pages/:id/links",
         link: "/pages/:id/links/:linkId",

@@ -9,7 +9,7 @@ import "hammerjs";
 import "./css/site.scss";
 import './index.css';
 import { ErrorBoundary } from "./features";
-import { PageTitleProvider } from "./hooks";
+import { PageHeaderProvider } from "./hooks";
 import { NextUIProvider } from "@nextui-org/react";
 
 const container = document.getElementById("root")!;
@@ -32,9 +32,9 @@ root.render(
     <Provider store={store}>
       <ErrorBoundary>
         <NextUIProvider>
-          <PageTitleProvider>
+          <PageHeaderProvider>
             <RouterProvider router={router} />
-          </PageTitleProvider>
+          </PageHeaderProvider>
         </NextUIProvider>
       </ErrorBoundary>
     </Provider>

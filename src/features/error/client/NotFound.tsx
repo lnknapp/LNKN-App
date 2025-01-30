@@ -3,11 +3,11 @@ import PageLayout from '../../BasePageLayout';
 import { Button } from '../../../components';
 import { routes } from '../../../app/routes';
 import { FaArrowLeft } from 'react-icons/fa';
-import { useSetPageTitle } from '../../../hooks';
+import { useSetPageHeader } from '../../../hooks';
 import { useNavigate } from 'react-router-dom';
 
 export function NotFound() {
-  useSetPageTitle("");
+  useSetPageHeader("");
   const navigate = useNavigate();
   return (
     <AppLayout>

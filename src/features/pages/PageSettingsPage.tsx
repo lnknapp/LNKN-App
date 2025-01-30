@@ -1,17 +1,17 @@
 import { Button } from "@nextui-org/react";
 import { routes } from "../../app/routes";
 import { usePageActions } from "../BasePageLayout";
-import { PageContents } from "./components/PageContents";
 import { useNavigate } from "react-router-dom";
 import { usePageDetails } from "./components/PageDetailsContext";
 import { usePage } from "./hooks/usePage";
-import { useSetPageHeader } from "../../hooks";
-import { Formik } from "formik";
-import * as yup from "yup";
 import { useRef } from "react";
+import { Formik } from "formik";
+import { PageSettings } from "./components/PageSettings";
+import * as yup from "yup";
+import { useSetPageHeader } from "../../hooks";
 import { FaLink } from "react-icons/fa";
 
-export function PageDetailsPage() {
+export function PageSettingsPage() {
   const navigate = useNavigate();
   const { page, user, updatePageKey, setPage } = usePageDetails();
   const { handleUpdatePage } = usePage();
@@ -76,11 +76,11 @@ export function PageDetailsPage() {
     </div>
   ,[page, submitButtonRef]);
 
-  const validationSchema = yup.object().shape({
-    name: yup.string().required("Name is required"),
-  });
+    const validationSchema = yup.object().shape({
+      slug: yup.string().required("Shortcode is required"),
+    });
+    return (
 
-  return (
     <Formik
       initialValues={page}
       validationSchema={validationSchema}
@@ -92,7 +92,7 @@ export function PageDetailsPage() {
     >
       {({ handleSubmit }) => (
         <form onSubmit={handleSubmit}>
-          <PageContents />
+          <PageSettings />
           <button type="submit" ref={submitButtonRef} style={{ display: 'none' }} />
         </form>
       )}
@@ -100,5 +100,5 @@ export function PageDetailsPage() {
   );
 }
 
-export default PageDetailsPage;
+export default PageSettingsPage;
 

@@ -1,8 +1,11 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Page } from '../../../data/entities/pages';
+import { UserInfo } from '../../../models';
+import { UserService } from '../../../services';
 
 interface PageDetailsContextProps {
   page: Page;
+  user: UserInfo | null;
   setPage: (page: Page) => void;
   updatePageKey: (key: keyof Page, value: any) => void;
 }
@@ -16,6 +19,17 @@ const PageDetailsContext = createContext<PageDetailsContextProps | undefined>(un
 
 export const PageDetailsProvider: React.FC<PageDetailsProviderProps> = ({ children, initialPage }) => {
   const [page, setPage] = useState<Page>(initialPage);
+  const [user, setUser] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userInfo = await UserService.getUserInfo();
+      if (userInfo)
+        setUser(userInfo);
+    };
+
+    fetchUser();
+  }, [page]);
 
   const updatePageKey = (key: keyof Page, value: any) => {
     setPage((prevPage) => {
@@ -25,7 +39,7 @@ export const PageDetailsProvider: React.FC<PageDetailsProviderProps> = ({ childr
   };
 
   return (
-    <PageDetailsContext.Provider value={{ page, setPage, updatePageKey }}>
+    <PageDetailsContext.Provider value={{ page, user, setPage, updatePageKey }}>
       {children}
     </PageDetailsContext.Provider>
   );

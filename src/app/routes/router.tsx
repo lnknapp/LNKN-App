@@ -44,6 +44,14 @@ const browserRouter = createBrowserRouter([
                   {
                     path: "",
                     element: <Features.PageDetailsPage />,
+                  },
+                  {
+                    path: "appearance",
+                    element: <Features.PageAppearancePage />,
+                  },
+                  {
+                    path: "settings",
+                    element: <Features.PageSettingsPage />,
                   }
                 ]
               }

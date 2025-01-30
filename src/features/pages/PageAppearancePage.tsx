@@ -1,17 +1,14 @@
 import { Button } from "@nextui-org/react";
 import { routes } from "../../app/routes";
 import { usePageActions } from "../BasePageLayout";
-import { PageContents } from "./components/PageContents";
 import { useNavigate } from "react-router-dom";
 import { usePageDetails } from "./components/PageDetailsContext";
 import { usePage } from "./hooks/usePage";
 import { useSetPageHeader } from "../../hooks";
-import { Formik } from "formik";
-import * as yup from "yup";
 import { useRef } from "react";
 import { FaLink } from "react-icons/fa";
 
-export function PageDetailsPage() {
+export function PageAppearancePage() {
   const navigate = useNavigate();
   const { page, user, updatePageKey, setPage } = usePageDetails();
   const { handleUpdatePage } = usePage();
@@ -76,29 +73,14 @@ export function PageDetailsPage() {
     </div>
   ,[page, submitButtonRef]);
 
-  const validationSchema = yup.object().shape({
-    name: yup.string().required("Name is required"),
-  });
-
   return (
-    <Formik
-      initialValues={page}
-      validationSchema={validationSchema}
-      onSubmit={(values) => {
-        handleUpdatePage(values);
-        setPage(values);
-      }}
-      enableReinitialize
-    >
-      {({ handleSubmit }) => (
-        <form onSubmit={handleSubmit}>
-          <PageContents />
-          <button type="submit" ref={submitButtonRef} style={{ display: 'none' }} />
-        </form>
-      )}
-    </Formik>
+    <>
+      <div>
+        <h1>Appearance</h1>
+      </div>
+    </>
   );
 }
 
-export default PageDetailsPage;
+export default PageAppearancePage;
 

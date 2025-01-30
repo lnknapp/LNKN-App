@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAsync, useSetPageTitle } from "../../hooks";
+import { useAsync, useSetPageHeader } from "../../hooks";
 import { usePageActions } from "../BasePageLayout";
 import { useDisclosure } from "@nextui-org/react";
 import { PageCard, SkeletonPageCard } from "./components";
@@ -16,7 +16,7 @@ export function PagesIndexPage() {
 
   const { value: pages, loading, error } = useAsync(() => pageService.getAll(), [refreshKey]);
 
-  useSetPageTitle("Pages");
+  useSetPageHeader("Pages");
   usePageActions(
     <NewPageDropdown
       onSelectPageType={(pageType: PageType) => {

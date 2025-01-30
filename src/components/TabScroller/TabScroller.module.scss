@@ -1,0 +1,18 @@
+.customScroll {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.customScroll::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+.scrollIndicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 5rem;
+  background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}

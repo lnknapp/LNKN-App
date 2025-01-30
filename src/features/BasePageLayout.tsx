@@ -1,13 +1,18 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import style from './BasePageLayout.module.scss';
-import { usePageTitle } from "../hooks";
+import { usePageHeader } from "../hooks";
 import { useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 
-function PageTitle() {
-  const { title } = usePageTitle();
+function PageHeader() {
+  const { title, additionalItems } = usePageHeader();
   if (title && title !== "") {
-    return <h2 className="text-3xl font-semibold m-0">{title}</h2>;
+    return (
+      <div className="flex items-center space-x-2">
+        <h2 className="text-3xl font-semibold">{title}</h2>
+        {additionalItems && <div>{additionalItems}</div>}
+      </div>
+    );
   }
   return <div></div>;
 }
@@ -71,7 +76,7 @@ export function BasePageLayout({ children }: Readonly<BasePageLayoutProps>) {
               >
               <FaBars />
             </button>
-            <PageTitle />
+            <PageHeader />
           </div>
           {actions}
         </div>

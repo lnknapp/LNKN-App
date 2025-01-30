@@ -7,7 +7,6 @@ export const PageContents = () => {
   const { page } = usePageDetails();
   interface FormValues {
     name: string;
-    // add other form fields here
   }
 
   const { values, handleChange, errors, touched } = useFormikContext<FormValues>();
