@@ -8,23 +8,28 @@ import { usePage } from "./hooks/usePage";
 import { useSetPageHeader } from "../../hooks";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { FaLink } from "react-icons/fa";
+import { useRefresh } from "../../components";
 
 export function PageDetailsPage() {
   const navigate = useNavigate();
   const { page, user, updatePageKey, setPage } = usePageDetails();
   const { handleUpdatePage } = usePage();
   const submitButtonRef = useRef<HTMLButtonElement>(null);
-  const pageUrl = page.type === "Profile"
-  ? `http://localhost:3000/${user?.userName}`
-  : page.slug
-    ? `http://localhost:3000/${user?.userName}/${page.slug}`
-    : undefined;
+  const { refreshTrigger, setRefreshTrigger } = useRefresh();
 
-  useSetPageHeader(
-    page?.name,
-    pageUrl ? (
+  const pageUrl = useMemo(() => {
+    if (page.type === "Profile") {
+      return `http://localhost:3000/${user?.userName}`;
+    } else if (page.slug) {
+      return `http://localhost:3000/${user?.userName}/${page.slug}`;
+    }
+    return undefined;
+  }, [page.type, page.slug, user?.userName]);
+
+  const additionalItems = useMemo(() => {
+    return pageUrl ? (
       <a href={pageUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-primary flex items-center mx-2">
         <FaLink />
         <span className="ml-2">
@@ -33,9 +38,10 @@ export function PageDetailsPage() {
             : `lnkn.my/${user?.userName}/${page.slug}`}
         </span>
       </a>
-    ) : null,
-    [page]
-  );
+    ) : null;
+  }, [pageUrl, page.type, user?.userName, page.slug]);
+
+  useSetPageHeader(page?.name, additionalItems, [page?.name, additionalItems])
 
   usePageActions(
     <div className="flex justify-end space-x-2">
@@ -87,6 +93,7 @@ export function PageDetailsPage() {
       onSubmit={(values) => {
         handleUpdatePage(values);
         setPage(values);
+        setRefreshTrigger(!refreshTrigger);
       }}
       enableReinitialize
     >

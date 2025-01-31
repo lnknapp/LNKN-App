@@ -9,13 +9,15 @@ export function PublicPage() {
   const userName = useUrlParams("username");
   const slug = useUrlParams("slug");
 
-  const { value: page, loading, error } = useAsync(() => pageService.getBySlug(userName, slug), [slug, userName]);
+  const { value: page, loading, error } = useAsync(() => pageService.getByUsernameAndSlug(userName, slug), [slug, userName]);
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <>
-      <div className="text-xl text-center my-5 font-bold">PublicPage</div>
+      <div className="text-xl text-center my-5 font-bold">{page?.name}</div>
 
-      <h1>{page?.value[0].name}</h1>
+      <h1>{page?.name}</h1>
       <h1>{slug}</h1>
 
 

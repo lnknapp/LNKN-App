@@ -4,7 +4,7 @@ import { PageService, UserService } from "../../../services";
 import { PageDetailsProvider } from "../components/PageDetailsContext";
 import { Tabs, Tab } from "@nextui-org/react";
 import { routes } from "../../../app/routes";
-import { TabScroller } from "../../../components";
+import { RefreshProvider, TabScroller } from "../../../components";
 import PhonePreview from "../../../components/PhonePreview/PhonePreview";
 
 export function PageLayout() {
@@ -25,34 +25,36 @@ export function PageLayout() {
   if (error) return <p>Error: {error.message}</p>;
   if (!page) return <p>Page not found</p>;
 
-  // const pageUrl = `http://localhost:3000/${userInfo?.userName}/${page.slug}`; // Adjust the URL as needed
-  const pageUrl = 'https://kupeomusic.com/all-my-friends';
+  const pageUrl = `http://localhost:3000/${userInfo?.userName}/${page.slug}`; // Adjust the URL as needed
+  // const pageUrl = 'https://kupeomusic.com/all-my-friends';
 
   return (
-    <PageDetailsProvider initialPage={page}>
-      <div className="flex h-full">
-        <div className="flex-grow">
-          <TabScroller>
-            <Tabs
-              aria-label="Pages Tabs"
-              selectedKey={location.pathname}
-              onSelectionChange={handleTabChange}
-              variant="light"
-              color="primary"
-              className="font-semibold"
-            >
-              <Tab key={routes.pages.page.index.replace(":id", pageId.toString())} title="Details" />
-              <Tab key={routes.pages.page.appearance.replace(":id", pageId.toString())} title="Appearance" />
-              <Tab key={routes.pages.page.settings.replace(":id", pageId.toString())} title="Settings" />
-            </Tabs>
-          </TabScroller>
-          <Outlet />
+    <RefreshProvider>
+      <PageDetailsProvider initialPage={page}>
+        <div className="flex h-full">
+          <div className="flex-grow">
+            <TabScroller>
+              <Tabs
+                aria-label="Pages Tabs"
+                selectedKey={location.pathname}
+                onSelectionChange={handleTabChange}
+                variant="light"
+                color="primary"
+                className="font-semibold"
+              >
+                <Tab key={routes.pages.page.index.replace(":id", pageId.toString())} title="Details" />
+                <Tab key={routes.pages.page.appearance.replace(":id", pageId.toString())} title="Appearance" />
+                <Tab key={routes.pages.page.settings.replace(":id", pageId.toString())} title="Settings" />
+              </Tabs>
+            </TabScroller>
+            <Outlet />
+          </div>
+          <div className="flex items-start">
+            <PhonePreview className="ms-[3rem]" pageUrl={pageUrl} />
+          </div>
         </div>
-        <div className="flex items-start">
-          <PhonePreview className="ms-[3rem]" pageUrl={pageUrl} />
-        </div>
-      </div>
-    </PageDetailsProvider>
+      </PageDetailsProvider>
+    </RefreshProvider>
   );
 }
 

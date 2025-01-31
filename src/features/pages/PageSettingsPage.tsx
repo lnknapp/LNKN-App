@@ -4,7 +4,7 @@ import { usePageActions } from "../BasePageLayout";
 import { useNavigate } from "react-router-dom";
 import { usePageDetails } from "./components/PageDetailsContext";
 import { usePage } from "./hooks/usePage";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { Formik } from "formik";
 import { PageSettings } from "./components/PageSettings";
 import * as yup from "yup";
@@ -16,15 +16,17 @@ export function PageSettingsPage() {
   const { page, user, updatePageKey, setPage } = usePageDetails();
   const { handleUpdatePage } = usePage();
   const submitButtonRef = useRef<HTMLButtonElement>(null);
-  const pageUrl = page.type === "Profile"
-  ? `http://localhost:3000/${user?.userName}`
-  : page.slug
-    ? `http://localhost:3000/${user?.userName}/${page.slug}`
-    : undefined;
+  const pageUrl = useMemo(() => {
+    if (page.type === "Profile") {
+      return `http://localhost:3000/${user?.userName}`;
+    } else if (page.slug) {
+      return `http://localhost:3000/${user?.userName}/${page.slug}`;
+    }
+    return undefined;
+  }, [page.type, page.slug, user?.userName]);
 
-  useSetPageHeader(
-    page?.name,
-    pageUrl ? (
+  const additionalItems = useMemo(() => {
+    return pageUrl ? (
       <a href={pageUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-primary flex items-center mx-2">
         <FaLink />
         <span className="ml-2">
@@ -33,9 +35,10 @@ export function PageSettingsPage() {
             : `lnkn.my/${user?.userName}/${page.slug}`}
         </span>
       </a>
-    ) : null,
-    [page]
-  );
+    ) : null;
+  }, [pageUrl, page.type, user?.userName, page.slug]);
+
+  useSetPageHeader(page?.name, additionalItems, [page?.name, additionalItems])
 
   usePageActions(
     <div className="flex justify-end space-x-2">

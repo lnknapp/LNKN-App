@@ -4,3 +4,4 @@ export * from './AppSidebar';
 export * from './Button';
 export * from './UserDropdown';
 export * from './TabScroller';
+export * from './Refresh';

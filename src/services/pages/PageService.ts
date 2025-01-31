@@ -12,6 +12,10 @@ export class PageService extends BaseEntityService<Page, PageRepo, PageODataRepo
     return this.oDataRepo.query(`userId eq ${userName} and slug eq ${slug}`);
   }
 
+  getByUsernameAndSlug(userName: string, slug?: string): Promise<Page> {
+    return this.repo.getByUsernameAndSlug(userName, slug);
+  }
+
 }
 
 export default PageService;
