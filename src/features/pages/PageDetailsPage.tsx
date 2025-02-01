@@ -21,9 +21,9 @@ export function PageDetailsPage() {
 
   const pageUrl = useMemo(() => {
     if (page.type === "Profile") {
-      return `http://localhost:3000/${user?.userName}`;
+      return `http://localhost:3001/${user?.userName}`;
     } else if (page.slug) {
-      return `http://localhost:3000/${user?.userName}/${page.slug}`;
+      return `http://localhost:3001/${user?.userName}/${page.slug}`;
     }
     return undefined;
   }, [page.type, page.slug, user?.userName]);

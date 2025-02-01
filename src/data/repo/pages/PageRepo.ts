@@ -8,6 +8,11 @@ export class PageRepo extends BaseDataRepository<Page> {
     const response = await this.client.get(`${this.baseUrl}/${userName}/${slug}`);
     return this.handleResponse<Page>(response)!;
   }
+
+  async getPreview(userName: string, slug?: string): Promise<Page> {
+    const response = await this.client.get(`${this.baseUrl}/preview/${userName}/${slug}`);
+    return this.handleResponse<Page>(response)!;
+  }
 }
 
 export default PageRepo;

@@ -25,8 +25,7 @@ export function PageLayout() {
   if (error) return <p>Error: {error.message}</p>;
   if (!page) return <p>Page not found</p>;
 
-  const pageUrl = `http://localhost:3000/${userInfo?.userName}/${page.slug}`; // Adjust the URL as needed
-  // const pageUrl = 'https://kupeomusic.com/all-my-friends';
+  const previewPageUrl = `http://localhost:3001/preview/${userInfo?.userName}/${page.slug}`; // Adjust the URL as needed
 
   return (
     <RefreshProvider>
@@ -50,7 +49,7 @@ export function PageLayout() {
             <Outlet />
           </div>
           <div className="flex items-start">
-            <PhonePreview className="ms-[3rem]" pageUrl={pageUrl} />
+            <PhonePreview className="ms-[3rem]" pageUrl={previewPageUrl} />
           </div>
         </div>
       </PageDetailsProvider>

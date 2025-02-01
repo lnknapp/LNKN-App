@@ -12,8 +12,8 @@ export const PageContents = () => {
   const { values, handleChange, errors, touched } = useFormikContext<FormValues>();
 
   return (
-    <div>
-      <Input
+    <div className="space-y-4">
+      {/* <Input
         isDisabled={page.type === "Profile"}
         type="string"
         label="Name"
@@ -23,7 +23,7 @@ export const PageContents = () => {
         errorMessage={errors.name}
         isInvalid={!!errors.name && touched.name}
         variant="bordered"
-      />
+      /> */}
     </div>
   )
 }

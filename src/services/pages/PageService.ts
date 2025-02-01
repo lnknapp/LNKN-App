@@ -16,6 +16,10 @@ export class PageService extends BaseEntityService<Page, PageRepo, PageODataRepo
     return this.repo.getByUsernameAndSlug(userName, slug);
   }
 
+  getPreview(userName: string, slug: string): Promise<Page> {
+    return this.repo.getPreview(userName, slug);
+  }
+
 }
 
 export default PageService;

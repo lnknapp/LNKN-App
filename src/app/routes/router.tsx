@@ -174,13 +174,31 @@ const browserRouter = createBrowserRouter([
     element: <Outlet />,
     children: [
       {
-        path: ":username",
-        element: <Features.PublicPage />,
+        path: "",
+        children: [
+          {
+            path: ":username",
+            element: <Features.PublicPage />,
+          },
+          {
+            path: ":username/:slug",
+            element: <Features.PublicPage />,
+          },
+        ]
       },
       {
-        path: ":username/:slug",
-        element: <Features.PublicPage />,
-      },
+        path: "preview",
+        children: [
+          {
+            path: ":username",
+            element: <Features.PreviewPage />,
+          },
+          {
+            path: ":username/:slug",
+            element: <Features.PreviewPage />,
+          }
+        ]
+      }
     ],
 
   }
