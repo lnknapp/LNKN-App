@@ -14,7 +14,7 @@ export function PreviewPage() {
   if (error) return <p>Error: {error.message}</p>;
   if (!page) return <p>Page not found</p>;
 
-  return <PageRenderer page={page} slug={slug} />;
+  return <PageRenderer page={page} />;
 }
 
 export default PreviewPage;

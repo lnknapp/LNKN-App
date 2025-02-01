@@ -12,11 +12,11 @@ export class PageService extends BaseEntityService<Page, PageRepo, PageODataRepo
     return this.oDataRepo.query(`userId eq ${userName} and slug eq ${slug}`);
   }
 
-  getByUsernameAndSlug(userName: string, slug?: string): Promise<Page> {
+  getByUsernameAndSlug(userName: string, slug?: string | null): Promise<Page> {
     return this.repo.getByUsernameAndSlug(userName, slug);
   }
 
-  getPreview(userName: string, slug: string): Promise<Page> {
+  getPreview(userName: string, slug?: string | null): Promise<Page> {
     return this.repo.getPreview(userName, slug);
   }
 

@@ -1,9 +1,8 @@
 interface PageRendererProps {
   page: any;
-  slug: string;
 }
 
-const PageRenderer = ({ page, slug } : PageRendererProps) => {
+const PageRenderer = ({ page } : PageRendererProps) => {
   const theme = page.theme ? JSON.parse(page.theme) : {};
   const backgroundColor = theme.backgroundColor || '#ffffff';
   const fontFamily = theme.fontFamily || 'Arial, sans-serif';
@@ -12,7 +11,6 @@ const PageRenderer = ({ page, slug } : PageRendererProps) => {
     <div className="w-full h-full flex flex-col" style={{ backgroundColor, fontFamily, minHeight: '100vh' }}>
       <div className="text-xl text-center my-5 font-bold">{page?.name}</div>
       <h1>{page?.name}</h1>
-      <h1>{slug}</h1>
     </div>
   );
 };

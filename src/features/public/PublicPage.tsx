@@ -16,7 +16,7 @@ export function PublicPage() {
     if ((error as any).code === 404) return <PublicNotFound />;
   }
 
-  return <PageRenderer page={page} slug={slug} />;
+  return <PageRenderer page={page} />;
 }
 
 export default PublicPage;
