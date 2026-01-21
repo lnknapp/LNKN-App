@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import style from './PhonePreview.module.scss';
 import { useRefresh } from '../Refresh';
 
 interface PhonePreviewProps {
-  pageUrl: string;
+  pageUrl?: string;
   className?: string;
+  children?: ReactNode;
 }
 
-const PhonePreview = ({ pageUrl, className }: PhonePreviewProps) => {
+const PhonePreview = ({ pageUrl, className, children }: PhonePreviewProps) => {
   const [iframeSrc, setIframeSrc] = useState(pageUrl);
   const { refreshTrigger } = useRefresh();
 
   useEffect(() => {
+    if (!pageUrl) return;
     if (refreshTrigger) {
       setIframeSrc(`${pageUrl}?timestamp=${new Date().getTime()}`);
     }
@@ -19,7 +21,13 @@ const PhonePreview = ({ pageUrl, className }: PhonePreviewProps) => {
 
   return (
     <div className={style.phonePreview + ' ' + className}>
-      <iframe src={iframeSrc} title="iPhone Preview" className={style.phoneFrame} />
+      {children ? (
+        <div className={style.phoneContent}>
+          {children}
+        </div>
+      ) : (
+        <iframe src={iframeSrc} title="iPhone Preview" className={style.phoneFrame} />
+      )}
     </div>
   );
 };

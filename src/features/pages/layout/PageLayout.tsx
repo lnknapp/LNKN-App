@@ -5,7 +5,7 @@ import { PageDetailsProvider } from "../components/PageDetailsContext";
 import { Tabs, Tab } from "@nextui-org/react";
 import { routes } from "../../../app/routes";
 import { RefreshProvider, TabScroller } from "../../../components";
-import PhonePreview from "../../../components/PhonePreview/PhonePreview";
+import LivePhonePreview from "../components/LivePhonePreview";
 
 export function PageLayout() {
 
@@ -24,8 +24,6 @@ export function PageLayout() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
   if (!page) return <p>Page not found</p>;
-
-  const previewPageUrl = `http://localhost:3001/preview/${userInfo?.userName}/${page.slug}`; // Adjust the URL as needed
 
   return (
     <RefreshProvider>
@@ -49,7 +47,7 @@ export function PageLayout() {
             <Outlet />
           </div>
           <div className="flex items-start">
-            <PhonePreview className="ms-[3rem]" pageUrl={previewPageUrl} />
+            <LivePhonePreview className="ms-[3rem]" />
           </div>
         </div>
       </PageDetailsProvider>

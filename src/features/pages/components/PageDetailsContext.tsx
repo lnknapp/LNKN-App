@@ -6,7 +6,7 @@ import { UserService } from '../../../services';
 interface PageDetailsContextProps {
   page: Page;
   user: UserInfo | null;
-  setPage: (page: Page) => void;
+  setPage: React.Dispatch<React.SetStateAction<Page>>;
   updatePageKey: (key: keyof Page, value: any) => void;
 }
 
@@ -29,7 +29,7 @@ export const PageDetailsProvider: React.FC<PageDetailsProviderProps> = ({ childr
     };
 
     fetchUser();
-  }, [page]);
+  }, []);
 
   const updatePageKey = (key: keyof Page, value: any) => {
     setPage((prevPage) => {

@@ -11,19 +11,20 @@ import { Formik } from "formik";
 import { useRefresh } from "../../components";
 import { PageAppearance } from "./components/PageAppearance";
 import * as yup from "yup";
+import { FormikPageSync } from "./components/FormikPageSync";
 
 export function PageAppearancePage() {
   const navigate = useNavigate();
   const { handleUpdatePage } = usePage();
-  const { page, user, updatePageKey, setPage } = usePageDetails();
+  const { page, user, updatePageKey } = usePageDetails();
   const { refreshTrigger, setRefreshTrigger } = useRefresh();
   const submitButtonRef = useRef<HTMLButtonElement>(null);
 
   const pageUrl = useMemo(() => {
     if (page.type === "Profile") {
-      return `http://localhost:3001/${user?.userName}`;
+      return `http://localhost:3000/${user?.userName}`;
     } else if (page.slug) {
-      return `http://localhost:3001/${user?.userName}/${page.slug}`;
+      return `http://localhost:3000/${user?.userName}/${page.slug}`;
     }
     return undefined;
   }, [page.type, page.slug, user?.userName]);
@@ -88,19 +89,19 @@ export function PageAppearancePage() {
 
   return (
       <Formik
+        key={page.id}
         initialValues={page}
         validationSchema={validationSchema}
         onSubmit={(values) => {
           handleUpdatePage(values);
-          setPage(values);
           setRefreshTrigger(!refreshTrigger);
         }}
-        enableReinitialize
       >
         {({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
+            <FormikPageSync />
             <PageAppearance />
-            <button type="submit" ref={submitButtonRef} style={{ display: 'none' }} />
+            <button type="submit" ref={submitButtonRef} className="hidden" aria-label="submit" />
           </form>
         )}
       </Formik>
