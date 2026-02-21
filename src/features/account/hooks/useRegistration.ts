@@ -13,12 +13,13 @@ export function useRegistration() {
     try {
       const ok = await accountService.register(request);
       hide();
-      if(ok)
-
+      if (ok) {
         showSuccessMessage(`Account created successfully!`);
         router.navigate(routes.account.login);
+      }
     }
     catch(e) {
+      hide();
       console.error(e);
     }
   }
@@ -31,6 +32,7 @@ export function useRegistration() {
       return ok;
     }
     catch(e) {
+      hide();
       console.error(e);
     }
   }
@@ -43,6 +45,7 @@ export function useRegistration() {
       return ok;
     }
     catch(e) {
+      hide();
       console.error(e);
     }
   }
