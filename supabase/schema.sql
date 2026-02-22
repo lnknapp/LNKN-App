@@ -131,21 +131,29 @@ create index if not exists idx_user_profiles_username on user_profiles(username)
 
 -- ============================================================
 -- ROW LEVEL SECURITY
+-- (drop first so this script is safe to re-run)
 -- ============================================================
 
--- Images: anyone can read, authenticated users can insert/delete their own
+-- Images
 alter table images enable row level security;
+drop policy if exists "Public image read"          on images;
+drop policy if exists "Authenticated image insert" on images;
+drop policy if exists "Authenticated image update" on images;
 create policy "Public image read"           on images for select using (is_deleted = false);
 create policy "Authenticated image insert"  on images for insert with check (auth.role() = 'authenticated');
 create policy "Authenticated image update"  on images for update using (auth.role() = 'authenticated');
 
--- Pages: users own their pages; published pages readable by anyone
+-- Pages
 alter table pages enable row level security;
+drop policy if exists "Owner full access on pages"  on pages;
+drop policy if exists "Public read published pages" on pages;
 create policy "Owner full access on pages"  on pages using (user_id = auth.uid());
 create policy "Public read published pages" on pages for select using (is_published = true and is_deleted = false);
 
--- Links: users own links on their pages; links on published pages readable by anyone
+-- Links
 alter table links enable row level security;
+drop policy if exists "Owner full access on links" on links;
+drop policy if exists "Public read links"          on links;
 create policy "Owner full access on links"  on links
   using (page_id in (select id from pages where user_id = auth.uid()));
 create policy "Public read links"           on links for select
@@ -154,27 +162,34 @@ create policy "Public read links"           on links for select
     page_id in (select id from pages where is_published = true and is_deleted = false)
   );
 
--- Tags: readable by all authenticated users
+-- Tags
 alter table tags enable row level security;
+drop policy if exists "Authenticated tag read"  on tags;
+drop policy if exists "Authenticated tag write" on tags;
 create policy "Authenticated tag read"   on tags for select using (auth.role() = 'authenticated' and is_deleted = false);
 create policy "Authenticated tag write"  on tags for all   using (auth.role() = 'authenticated');
 
 -- Page Tags
 alter table page_tags enable row level security;
+drop policy if exists "Owner full access on page_tags" on page_tags;
 create policy "Owner full access on page_tags" on page_tags
   using (page_id in (select id from pages where user_id = auth.uid()));
 
--- User Profiles: users own their profile; anyone can read (needed for public pages)
+-- User Profiles
 alter table user_profiles enable row level security;
+drop policy if exists "Owner full access on profile" on user_profiles;
+drop policy if exists "Public read profiles"         on user_profiles;
 create policy "Owner full access on profile" on user_profiles using (user_id = auth.uid());
 create policy "Public read profiles"         on user_profiles for select using (true);
 
--- Addresses: users own their addresses
+-- Addresses
 alter table addresses enable row level security;
+drop policy if exists "Owner full access on addresses" on addresses;
 create policy "Owner full access on addresses" on addresses using (user_id = auth.uid());
 
--- Regions: readable by anyone
+-- Regions
 alter table regions enable row level security;
+drop policy if exists "Public read regions" on regions;
 create policy "Public read regions" on regions for select using (true);
 
 -- ============================================================
