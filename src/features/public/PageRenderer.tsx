@@ -3,11 +3,14 @@ import { SiApplemusic } from "react-icons/si";
 import { LinkType } from "../../data/entities/pages/LinkType";
 import { StreamPlatform } from "../../data/entities/pages/StreamPlatform";
 import { ImageService } from "../../services/image/ImageService";
+import { SocialsRow } from "./SocialsRow";
+import { SocialLinks } from "../../data/repo/userProfile/UserProfileRepo";
 
 const imageService = new ImageService();
 
 interface PageRendererProps {
   page: any;
+  socials?: SocialLinks;
 }
 
 const getLinkStyle = (link: any): React.CSSProperties => {
@@ -28,7 +31,7 @@ const getLinkIcon = (link: any) => {
   return <FaLink size={16} />;
 };
 
-const PageRenderer = ({ page }: PageRendererProps) => {
+const PageRenderer = ({ page, socials }: PageRendererProps) => {
   const theme = page.theme ? JSON.parse(page.theme) : {};
   const backgroundColor = theme.backgroundColor || '#ffffff';
   const fontFamily = theme.fontFamily || 'Arial, sans-serif';
@@ -51,6 +54,8 @@ const PageRenderer = ({ page }: PageRendererProps) => {
           </div>
         )}
       </div>
+
+      {socials && <SocialsRow socials={socials} />}
 
       {links.length > 0 && (
         <div className="flex flex-col gap-3 px-4">
