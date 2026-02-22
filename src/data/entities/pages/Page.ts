@@ -12,8 +12,7 @@ export interface Page {
   isPublished: boolean;
   theme: string;
   description?: string | null;
+  imageId?: number | null;
   links: Link[];
   pageTags: PageTag[];
-
-
 }

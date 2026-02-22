@@ -56,6 +56,8 @@ export const PageAppearance = () => {
 
   const selectedColor: string = theme.backgroundColor || '#ffffff';
   const selectedFont: string = theme.fontFamily || FONTS[0].value;
+  const selectedImageShape: 'sharp' | 'square' | 'round' = theme.imageShape || 'square';
+  const selectedButtonShape: 'sharp' | 'square' | 'round' = theme.buttonShape || 'round';
 
   const setColor = (hex: string) => {
     setFieldValue('theme', JSON.stringify({ ...theme, backgroundColor: hex }));
@@ -63,6 +65,14 @@ export const PageAppearance = () => {
 
   const setFont = (font: string) => {
     setFieldValue('theme', JSON.stringify({ ...theme, fontFamily: font }));
+  };
+
+  const setImageShape = (shape: 'sharp' | 'square' | 'round') => {
+    setFieldValue('theme', JSON.stringify({ ...theme, imageShape: shape }));
+  };
+
+  const setButtonShape = (shape: 'sharp' | 'square' | 'round') => {
+    setFieldValue('theme', JSON.stringify({ ...theme, buttonShape: shape }));
   };
 
   return (
@@ -137,6 +147,60 @@ export const PageAppearance = () => {
                 <CardBody className="flex flex-col items-center py-4 gap-1">
                   <span className="text-2xl font-medium leading-none" style={{ fontFamily: value }}>Aa</span>
                   <span className="text-xs text-default-500 mt-1">{label}</span>
+                </CardBody>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Image Shape */}
+      <div className="space-y-3">
+        <p className="text-sm font-semibold text-default-600 uppercase tracking-wider">Image Shape</p>
+        <div className="grid grid-cols-3 gap-2">
+          {([
+            { label: 'Sharp',  value: 'sharp'  as const, radius: 'rounded-none' },
+            { label: 'Square', value: 'square' as const, radius: 'rounded-xl' },
+            { label: 'Round',  value: 'round'  as const, radius: 'rounded-full' },
+          ]).map(({ label, value, radius }) => {
+            const selected = selectedImageShape === value;
+            return (
+              <Card
+                key={value}
+                isPressable
+                onPress={() => setImageShape(value)}
+                className={`border-2 transition-all ${selected ? 'border-primary bg-primary-50' : 'border-default-200'}`}
+              >
+                <CardBody className="flex flex-col items-center py-4 gap-2">
+                  <div className={`w-10 h-10 bg-default-300 ${radius}`} />
+                  <span className="text-xs text-default-500">{label}</span>
+                </CardBody>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Button Shape */}
+      <div className="space-y-3">
+        <p className="text-sm font-semibold text-default-600 uppercase tracking-wider">Button Shape</p>
+        <div className="grid grid-cols-3 gap-2">
+          {([
+            { label: 'Sharp',  value: 'sharp'  as const, radius: 'rounded-none' },
+            { label: 'Square', value: 'square' as const, radius: 'rounded-lg' },
+            { label: 'Round',  value: 'round'  as const, radius: 'rounded-full' },
+          ]).map(({ label, value, radius }) => {
+            const selected = selectedButtonShape === value;
+            return (
+              <Card
+                key={value}
+                isPressable
+                onPress={() => setButtonShape(value)}
+                className={`border-2 transition-all ${selected ? 'border-primary bg-primary-50' : 'border-default-200'}`}
+              >
+                <CardBody className="flex flex-col items-center py-4 gap-2">
+                  <div className={`w-16 h-6 bg-default-300 ${radius}`} />
+                  <span className="text-xs text-default-500">{label}</span>
                 </CardBody>
               </Card>
             );

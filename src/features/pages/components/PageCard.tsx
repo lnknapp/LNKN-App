@@ -2,6 +2,7 @@ import { Card, CardBody, Chip, Dropdown, DropdownTrigger, DropdownMenu, Dropdown
 import { FaEdit, FaEllipsisV, FaTrash, FaExternalLinkAlt } from "react-icons/fa";
 import { Page, PageType } from "../../../data/entities/pages";
 import { UserService } from "../../../services";
+import { ImageService } from "../../../services/image/ImageService";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../../app/routes";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
@@ -21,17 +22,30 @@ const TYPE_ACCENT: Record<PageType, string> = {
   [PageType.Event]:   "#f5a524",
 };
 
+const imageService = new ImageService();
+
 function PageThumbnail({ page }: { page: Page }) {
   const theme = (() => { try { return JSON.parse(page.theme); } catch { return {}; } })();
   const bg = theme.backgroundColor || "#022213";
   const initial = page.name?.[0]?.toUpperCase() ?? "?";
+
+  if (page.imageId) {
+    return (
+      <div className="w-14 h-14 rounded-xl shrink-0 overflow-hidden">
+        <img
+          src={imageService.getRenderUrl(page.imageId)}
+          alt={page.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    );
+  }
 
   return (
     <div
       className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 select-none relative overflow-hidden"
       style={{ backgroundColor: bg }}
     >
-      {/* Subtle pattern overlay */}
       <div className="absolute inset-0 opacity-10" style={{
         backgroundImage: "radial-gradient(circle at 70% 30%, white 1px, transparent 1px)",
         backgroundSize: "8px 8px",

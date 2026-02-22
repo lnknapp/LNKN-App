@@ -2,6 +2,7 @@ import { useFormikContext } from 'formik';
 import { usePageDetails } from './PageDetailsContext';
 import { Input } from '@nextui-org/react';
 import { LinksList } from './links';
+import { PageImageUpload } from './PageImageUpload';
 
 export const PageContents = () => {
 
@@ -25,6 +26,7 @@ export const PageContents = () => {
         isInvalid={!!errors.name && touched.name}
         variant="bordered"
       />
+      <PageImageUpload />
       <LinksList />
     </div>
   )
