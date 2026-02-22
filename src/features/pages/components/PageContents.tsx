@@ -1,6 +1,7 @@
 import { useFormikContext } from 'formik';
 import { usePageDetails } from './PageDetailsContext';
 import { Input } from '@nextui-org/react';
+import { LinksList } from './links';
 
 export const PageContents = () => {
 
@@ -13,7 +14,7 @@ export const PageContents = () => {
 
   return (
     <div className="space-y-4">
-      {/* <Input
+      <Input
         isDisabled={page.type === "Profile"}
         type="string"
         label="Name"
@@ -23,7 +24,8 @@ export const PageContents = () => {
         errorMessage={errors.name}
         isInvalid={!!errors.name && touched.name}
         variant="bordered"
-      /> */}
+      />
+      <LinksList />
     </div>
   )
 }

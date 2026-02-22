@@ -1,5 +1,6 @@
 export * from './Link';
 export * from './LinkType';
+export * from './StreamPlatform';
 export * from './Page';
 export * from './PageTag';
 export * from './PageType';
