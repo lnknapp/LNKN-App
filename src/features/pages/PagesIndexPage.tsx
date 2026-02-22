@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useAsync, useSetPageHeader } from "../../hooks";
 import { usePageActions } from "../BasePageLayout";
-import { useDisclosure } from "@nextui-org/react";
+import { Chip, useDisclosure } from "@nextui-org/react";
 import { PageCard, SkeletonPageCard } from "./components";
 import { NewPageModal } from "./components/NewPageModal";
 import { PageType } from '../../data/entities/pages';
 import { PageService } from '../../services';
 import NewPageDropdown from './components/NewPageDropdown';
+import { FaLayerGroup } from 'react-icons/fa';
 
 export function PagesIndexPage() {
   const pageService = new PageService();
@@ -38,11 +39,18 @@ export function PagesIndexPage() {
     if (!filteredPages || filteredPages.length === 0) return null;
 
     return (
-      <section key={type}>
-        <h2 className="text-2xl font-bold mb-4">{title}</h2>
-        {filteredPages.map((page) => (
-          <PageCard key={page.id} page={page} onDelete={() => setRefreshKey(oldKey => oldKey + 1)}/>
-        ))}
+      <section key={type} className="space-y-3">
+        <div className="flex items-center gap-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-default-500">{title}</p>
+          <Chip size="sm" variant="flat" color="default" className="text-xs h-5 min-w-0 px-1.5">
+            {filteredPages.length}
+          </Chip>
+        </div>
+        <div className="space-y-2">
+          {filteredPages.map((page) => (
+            <PageCard key={page.id} page={page} onDelete={() => setRefreshKey(oldKey => oldKey + 1)}/>
+          ))}
+        </div>
       </section>
     );
   };
@@ -50,16 +58,21 @@ export function PagesIndexPage() {
   return (
     <>
       {pages?.length === 0 && (
-        <div className="flex flex-col items-center justify-center w-full h-full space-y-4">
-          <h2 className="text-2xl font-bold">No pages found</h2>
-          <p className="text-gray-500">Create a new page to get started.</p>
+        <div className="flex flex-col items-center justify-center w-full h-full space-y-6 py-20">
+          <div className="w-16 h-16 rounded-2xl bg-default-100 flex items-center justify-center">
+            <FaLayerGroup className="text-default-300" size={28} />
+          </div>
+          <div className="text-center">
+            <h2 className="text-lg font-bold">No pages yet</h2>
+            <p className="text-sm text-default-400 mt-1">Create your first page to get started.</p>
+          </div>
         </div>
       )}
       <div className="space-y-8">
         {renderSection(PageType.Profile, "Profile")}
-        {renderSection(PageType.Song, "Song")}
-        {renderSection(PageType.Album, "Album")}
-        {renderSection(PageType.Event, "Event")}
+        {renderSection(PageType.Song, "Songs")}
+        {renderSection(PageType.Album, "Albums")}
+        {renderSection(PageType.Event, "Events")}
       </div>
       <NewPageModal
         isOpen={isOpen}

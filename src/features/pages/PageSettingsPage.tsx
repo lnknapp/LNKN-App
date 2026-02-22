@@ -83,7 +83,12 @@ export function PageSettingsPage() {
   ,[page, submitButtonRef]);
 
     const validationSchema = yup.object().shape({
-      slug: yup.string().required("Shortcode is required"),
+      slug: yup
+        .string()
+        .required("Shortcode is required")
+        .min(3, "Must be at least 3 characters")
+        .max(32, "Must be 32 characters or less")
+        .matches(/^[a-z0-9-]+$/, "Only lowercase letters, numbers, and hyphens allowed"),
     });
     return (
 

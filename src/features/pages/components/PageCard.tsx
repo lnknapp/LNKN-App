@@ -1,5 +1,5 @@
-import { Card, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Image, Chip } from "@nextui-org/react";
-import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
+import { Card, CardBody, Chip, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { FaEdit, FaEllipsisV, FaTrash, FaExternalLinkAlt } from "react-icons/fa";
 import { Page, PageType } from "../../../data/entities/pages";
 import { UserService } from "../../../services";
 import { useNavigate } from "react-router-dom";
@@ -13,92 +13,132 @@ interface PageCardProps {
   onDelete: () => void;
 }
 
+
+const TYPE_ACCENT: Record<PageType, string> = {
+  [PageType.Profile]: "#022213",
+  [PageType.Song]:    "#7828c8",
+  [PageType.Album]:   "#17c964",
+  [PageType.Event]:   "#f5a524",
+};
+
+function PageThumbnail({ page }: { page: Page }) {
+  const theme = (() => { try { return JSON.parse(page.theme); } catch { return {}; } })();
+  const bg = theme.backgroundColor || "#022213";
+  const initial = page.name?.[0]?.toUpperCase() ?? "?";
+
+  return (
+    <div
+      className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 select-none relative overflow-hidden"
+      style={{ backgroundColor: bg }}
+    >
+      {/* Subtle pattern overlay */}
+      <div className="absolute inset-0 opacity-10" style={{
+        backgroundImage: "radial-gradient(circle at 70% 30%, white 1px, transparent 1px)",
+        backgroundSize: "8px 8px",
+      }} />
+      <span className="text-white text-xl font-bold relative z-10">{initial}</span>
+    </div>
+  );
+}
+
 export const PageCard = ({ page, onDelete }: PageCardProps) => {
-  const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
   const navigate = useNavigate();
   const userInfo = UserService.getUserInfo();
   const isProfilePage = page.type === PageType.Profile;
   const { handleDeletePage: deletePage } = usePage();
-  const pageUrl = isProfilePage
-    ? `https://lnkn.my/${userInfo?.userName}`
-    : `https://lnkn.my/${userInfo?.userName}/${page.slug}`;
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const displayUrl = isProfilePage
+    ? `lnkn.my/${userInfo?.userName}`
+    : `lnkn.my/${userInfo?.userName}/${page.slug}`;
+  const fullUrl = `https://${displayUrl}`;
+
+  const accent = TYPE_ACCENT[page.type];
 
   const handleDeletePage = async (pageId: number) => {
     await deletePage(pageId);
     setDeleteModalOpen(false);
-    onDelete()
+    onDelete();
   };
 
   return (
     <>
       <Card
-        className="w-full space-y-5 p-2 mb-4 cursor-pointer "
+        className="w-full border border-default-200 shadow-none hover:shadow-md transition-shadow cursor-pointer group overflow-hidden"
         radius="lg"
       >
-        <div className="flex items-center space-x-4" onClick={() => navigate(routes.pages.page.index.replace(":id", page.id.toString()))}>
-          <Image
-            alt="Page cover"
-            className="object-cover"
-            height={75}
-            shadow="md"
-            src="https://nextui.org/images/album-cover.png"
-            width="100%"
-          />
-          <div className="flex flex-row justify-between space-y-3 flex-grow">
-            <div className="flex flex-col justify-center">
-              <h3 className="text-xl font-bold">{page.name}</h3>
-              <p
-                className="text-gray-500 hover:text-primary cursor-pointer"
-                onClick={(e: any) => {
-                  e.stopPropagation();
-                  window.open(pageUrl, "_blank");
-                }}
-              >
-                {isProfilePage
-                  ? `lnkn.my/${userInfo?.userName}`
-                  : `lnkn.my/${userInfo?.userName}/${page.slug}`}
-              </p>
-            </div>
-            <div className="flex items-center space-x-4" style={{"margin": "0 0.5rem 0 0"}}>
-              <Chip
-                color={page.isPublished ? "success" : "warning"}
-                variant="dot"
-              >
-                {page.isPublished ? "Live" : "Draft"}
-              </Chip>
-              <Dropdown>
-                <DropdownTrigger>
-                  <span className="cursor-pointer"><FaEllipsisV /></span>
-                </DropdownTrigger>
-                <DropdownMenu aria-label="Page Actions">
-                  <DropdownItem
-                    key="edit"
-                    startContent={<FaEdit className={iconClasses} />}
-                    onPress={() => navigate(routes.pages.page.index.replace(":id", page.id.toString()))}
-                  >
-                    Edit
-                  </DropdownItem>
-                  <DropdownItem
-                    key="delete"
-                    startContent={<FaTrash className={iconClasses} />}
-                    onPress={() => setDeleteModalOpen(true)}
-                  >
-                    Delete
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </div>
+        <div className="absolute left-0 top-0 bottom-0 w-1.5" style={{ backgroundColor: accent }} />
+        <CardBody className="flex flex-row items-center gap-4 p-4 pl-5">
+          {/* Thumbnail */}
+          <div onClick={() => navigate(routes.pages.page.index.replace(":id", page.id.toString()))}>
+            <PageThumbnail page={page} />
           </div>
-        </div>
+
+          {/* Info */}
+          <div
+            className="flex-1 min-w-0"
+            onClick={() => navigate(routes.pages.page.index.replace(":id", page.id.toString()))}
+          >
+            <h3 className="font-bold text-base leading-tight truncate">{page.name}</h3>
+            <button
+              className="flex items-center gap-1 text-xs text-default-400 hover:text-primary transition-colors mt-1 group/link"
+              onClick={(e) => { e.stopPropagation(); window.open(fullUrl, "_blank"); }}
+            >
+              <span className="truncate">{displayUrl}</span>
+              <FaExternalLinkAlt size={9} className="shrink-0 opacity-0 group-hover/link:opacity-100 transition-opacity" />
+            </button>
+          </div>
+
+          {/* Right side */}
+          <div className="flex items-center gap-3 shrink-0">
+            <Chip
+              size="sm"
+              variant="dot"
+              color={page.isPublished ? "success" : "warning"}
+              className="text-xs"
+            >
+              {page.isPublished ? "Live" : "Draft"}
+            </Chip>
+
+            <Dropdown>
+              <DropdownTrigger>
+                <button
+                  className="p-1.5 rounded-lg text-default-400 hover:text-default-700 hover:bg-default-100 transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <FaEllipsisV size={14} />
+                </button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Page Actions">
+                <DropdownItem
+                  key="edit"
+                  startContent={<FaEdit className="text-default-500" />}
+                  onPress={() => navigate(routes.pages.page.index.replace(":id", page.id.toString()))}
+                >
+                  Edit
+                </DropdownItem>
+                <DropdownItem
+                  key="delete"
+                  startContent={<FaTrash className="text-danger" />}
+                  className="text-danger"
+                  color="danger"
+                  onPress={() => setDeleteModalOpen(true)}
+                >
+                  Delete
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        </CardBody>
       </Card>
+
       <ConfirmDeleteModal
         isOpen={isDeleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={() => handleDeletePage(page.id)}
       />
     </>
-  )
+  );
 };
 
 export default PageCard;

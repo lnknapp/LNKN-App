@@ -2,6 +2,7 @@ import { useFormikContext } from 'formik';
 import { usePageDetails } from './PageDetailsContext';
 import { Divider, Input } from '@nextui-org/react';
 import { PageType } from '../../../data/entities/pages';
+import { UserService } from '../../../services';
 
 export const PageSettings = () => {
 
@@ -13,7 +14,17 @@ export const PageSettings = () => {
     name: string;
   }
 
-  const { values, handleChange, errors, touched } = useFormikContext<FormValues>();
+  const { values, handleChange, setFieldValue, errors, touched } = useFormikContext<FormValues>();
+  const userInfo = UserService.getUserInfo();
+
+  const handleSlugChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const sanitized = e.target.value
+      .toLowerCase()
+      .replace(/\s+/g, '-')       // spaces → hyphens
+      .replace(/[^a-z0-9-]/g, '') // strip anything not lowercase, digit, or hyphen
+      .replace(/-{2,}/g, '-');    // collapse multiple hyphens
+    setFieldValue('slug', sanitized);
+  };
 
   return (
     <div className="space-y-4">
@@ -34,15 +45,15 @@ export const PageSettings = () => {
       />
       {page.type !== "Profile" && (
         <Input
-          isDisabled={true}
           type="string"
           label="Shortcode"
           name="slug"
           value={values.slug}
-          onChange={handleChange}
+          onChange={handleSlugChange}
           errorMessage={errors.slug}
           isInvalid={!!errors.slug && touched.slug}
           variant="bordered"
+          description={values.slug ? `lnkn.my/${userInfo?.userName}/${values.slug}` : undefined}
         />
       )}
       <Input

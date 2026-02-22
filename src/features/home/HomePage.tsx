@@ -96,9 +96,6 @@ function RecentPageRow({ page, userName, linkCount }: { page: Page; userName: st
       </div>
       <div className="flex items-center gap-2 shrink-0">
         <span className="text-xs text-default-400">{linkCount} btn{linkCount !== 1 ? "s" : ""}</span>
-        <Chip size="sm" variant="dot" color={page.isPublished ? "success" : "warning"} className="text-xs">
-          {page.isPublished ? "Live" : "Draft"}
-        </Chip>
         <Chip size="sm" variant="flat" color={PAGE_TYPE_COLORS[page.type] ?? "default"} className="text-xs hidden sm:flex">
           {page.type}
         </Chip>
@@ -213,17 +210,44 @@ export function HomePage() {
                 </div>
               )}
 
-              {!loading && (pages?.length ?? 0) > 0 && (
-                <div className="divide-y divide-default-100">
-                  {pages!.slice(0, 6).map(page => (
-                    <RecentPageRow
-                      key={page.id} page={page}
-                      userName={userInfo?.userName ?? ""}
-                      linkCount={linksByPage.get(page.id) ?? 0}
-                    />
-                  ))}
-                </div>
-              )}
+              {!loading && (pages?.length ?? 0) > 0 && (() => {
+                const TYPE_ORDER = [PageType.Profile, PageType.Song, PageType.Album, PageType.Event];
+                const byType = (a: Page, b: Page) => TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type);
+                const live  = pages!.filter(p => p.isPublished).sort(byType);
+                const draft = pages!.filter(p => !p.isPublished).sort(byType);
+                return (
+                  <div className="space-y-4">
+                    {live.length > 0 && (
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="w-2 h-2 rounded-full bg-success-500 shrink-0" />
+                          <p className="text-xs font-semibold uppercase tracking-wider text-default-500">Live</p>
+                          <span className="text-xs text-default-400">({live.length})</span>
+                        </div>
+                        <div className="divide-y divide-default-100">
+                          {live.map(page => (
+                            <RecentPageRow key={page.id} page={page} userName={userInfo?.userName ?? ""} linkCount={linksByPage.get(page.id) ?? 0} />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {draft.length > 0 && (
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="w-2 h-2 rounded-full bg-warning-400 shrink-0" />
+                          <p className="text-xs font-semibold uppercase tracking-wider text-default-500">Drafts</p>
+                          <span className="text-xs text-default-400">({draft.length})</span>
+                        </div>
+                        <div className="divide-y divide-default-100">
+                          {draft.map(page => (
+                            <RecentPageRow key={page.id} page={page} userName={userInfo?.userName ?? ""} linkCount={linksByPage.get(page.id) ?? 0} />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </CardBody>
           </Card>
 
