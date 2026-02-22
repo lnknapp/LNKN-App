@@ -28,16 +28,29 @@ const PALETTE = [
   '#452bc5', '#1DB954', '#fc3c44',
 ];
 
-const FONTS = [
-  { label: 'Inter', value: 'Inter, sans-serif' },
-  { label: 'Roboto', value: 'Roboto, sans-serif' },
-  { label: 'Montserrat', value: 'Montserrat, sans-serif' },
-  { label: 'Playfair', value: 'Playfair Display, serif' },
-  { label: 'Georgia', value: 'Georgia, serif' },
-  { label: 'Verdana', value: 'Verdana, sans-serif' },
-  { label: 'Courier', value: 'Courier New, monospace' },
-  { label: 'Impact', value: 'Impact, sans-serif' },
+const FONTS: { label: string; value: string; category: string }[] = [
+  // Modern
+  { label: 'DM Sans',           value: '"DM Sans", sans-serif',           category: 'Modern' },
+  { label: 'Space Grotesk',     value: '"Space Grotesk", sans-serif',     category: 'Modern' },
+  { label: 'Outfit',            value: '"Outfit", sans-serif',            category: 'Modern' },
+  { label: 'Plus Jakarta Sans', value: '"Plus Jakarta Sans", sans-serif', category: 'Modern' },
+  { label: 'Nunito',            value: '"Nunito", sans-serif',            category: 'Modern' },
+  // Elegant
+  { label: 'Cormorant Garamond', value: '"Cormorant Garamond", serif',   category: 'Elegant' },
+  { label: 'Playfair Display',   value: '"Playfair Display", serif',      category: 'Elegant' },
+  { label: 'DM Serif Display',   value: '"DM Serif Display", serif',      category: 'Elegant' },
+  { label: 'Libre Baskerville',  value: '"Libre Baskerville", serif',     category: 'Elegant' },
+  // Display
+  { label: 'Bebas Neue',        value: '"Bebas Neue", cursive',           category: 'Display' },
+  { label: 'Oswald',            value: '"Oswald", sans-serif',            category: 'Display' },
+  { label: 'Anton',             value: '"Anton", sans-serif',             category: 'Display' },
+  // Creative
+  { label: 'Josefin Sans',      value: '"Josefin Sans", sans-serif',      category: 'Creative' },
+  { label: 'Raleway',           value: '"Raleway", sans-serif',           category: 'Creative' },
+  { label: 'Righteous',         value: '"Righteous", cursive',            category: 'Creative' },
 ];
+
+const FONT_CATEGORIES = ['Modern', 'Elegant', 'Display', 'Creative'];
 
 const isLight = (hex: string) => {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -132,26 +145,31 @@ export const PageAppearance = () => {
       </div>
 
       {/* Font */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         <p className="text-sm font-semibold text-default-600 uppercase tracking-wider">Font</p>
-        <div className="grid grid-cols-2 gap-2">
-          {FONTS.map(({ label, value }) => {
-            const selected = selectedFont === value;
-            return (
-              <Card
-                key={value}
-                isPressable
-                onPress={() => setFont(value)}
-                className={`border-2 transition-all ${selected ? 'border-primary bg-primary-50' : 'border-default-200'}`}
-              >
-                <CardBody className="flex flex-col items-center py-4 gap-1">
-                  <span className="text-2xl font-medium leading-none" style={{ fontFamily: value }}>Aa</span>
-                  <span className="text-xs text-default-500 mt-1">{label}</span>
-                </CardBody>
-              </Card>
-            );
-          })}
-        </div>
+        {FONT_CATEGORIES.map((cat) => (
+          <div key={cat} className="space-y-2">
+            <p className="text-xs text-default-400 uppercase tracking-wider">{cat}</p>
+            <div className="grid grid-cols-2 gap-2">
+              {FONTS.filter((f) => f.category === cat).map(({ label, value }) => {
+                const selected = selectedFont === value;
+                return (
+                  <Card
+                    key={value}
+                    isPressable
+                    onPress={() => setFont(value)}
+                    className={`border-2 transition-all ${selected ? 'border-primary bg-primary-50' : 'border-default-200'}`}
+                  >
+                    <CardBody className="flex flex-col items-center py-4 gap-1">
+                      <span className="text-2xl font-medium leading-none" style={{ fontFamily: value }}>Aa</span>
+                      <span className="text-xs text-default-500 mt-1">{label}</span>
+                    </CardBody>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Image Shape */}
