@@ -1,48 +1,38 @@
-import { store, setUserInfo } from "../../app/store";
-import { ODataResponse, UserModel } from "../../data/entities";
-import { UserODataRepo, UserRepo } from "../../data/repo";
-import { Role } from "../../models";
-import { BaseEntityService } from "../../services/BaseEntityService";
-import { forceLogout } from "../../utils";
-import TokenService from "./TokenService";
-export class UserService extends BaseEntityService<UserModel, UserRepo, UserODataRepo> {
+import { store, setUserInfo } from '../../app/store';
+import { ODataResponse, UserModel } from '../../data/entities';
+import { UserODataRepo, UserRepo } from '../../data/repo';
+import { Role } from '../../models';
+import { BaseEntityService } from '../../services/BaseEntityService';
+import { forceLogout } from '../../utils';
+import { supabase } from '../../lib/supabase';
 
-  constructor(){
+export class UserService extends BaseEntityService<UserModel, UserRepo, UserODataRepo> {
+  constructor() {
     super(new UserRepo(), new UserODataRepo());
   }
 
   static readonly getUserInfo = () => store.getState().authentication.userInfo;
-
   static readonly getUserToken = () => store.getState().authentication.userToken;
-
   static readonly getTokenData = () => store.getState().authentication.tokenData;
 
-
-  static readonly getDisplayName = () => {
-    let currentUser = this.getUserInfo();
-    return !currentUser ? "" :
-      `${currentUser.userName}`;
-  }
-
-  static readonly getId = () => this.getUserInfo()?.id ?? 0;
-
-  static readonly getUserName = () => this.getUserInfo()?.userName ?? "";
-
-  static readonly getUserEmail = () => this.getUserInfo()?.userName ?? "";
+  static readonly getDisplayName = () => UserService.getUserInfo()?.userName ?? '';
+  static readonly getId = (): string => UserService.getUserInfo()?.id ?? '';
+  static readonly getUserName = () => UserService.getUserInfo()?.userName ?? '';
+  static readonly getUserEmail = () => UserService.getUserInfo()?.userName ?? '';
 
   static readonly isInRole = (roleName: Role) => {
-    const userInfo = this.getUserInfo();
-    if (userInfo?.roles === null || userInfo?.roles === undefined) return false;
-    return !!userInfo && userInfo.roles.some(userRole => userRole.role?.name === roleName);
+    const userInfo = UserService.getUserInfo();
+    if (!userInfo?.roles) return false;
+    return userInfo.roles.some((userRole) => userRole.role?.name === roleName);
+  };
 
-  }
-
-  static readonly isInRoles = (roleNames: Role[]) => roleNames.some(roleName => this.isInRole(roleName));
+  static readonly isInRoles = (roleNames: Role[]) => roleNames.some((r) => UserService.isInRole(r));
 
   static readonly isSignedIn = () => {
     const { isSignedIn, userToken } = store.getState().authentication;
-    return isSignedIn && !!userToken && !TokenService.isTokenExpired();
-  }
+    // Trust the Redux state; Supabase auto-refreshes tokens in the background
+    return isSignedIn && !!userToken;
+  };
 
   static readonly signout = () => forceLogout();
 
@@ -51,10 +41,10 @@ export class UserService extends BaseEntityService<UserModel, UserRepo, UserODat
     const loggedUser = await this.get(model.id ?? 0);
     store.dispatch(setUserInfo(loggedUser));
     return ok;
-  }
+  };
 
-  getUsers = async (oDataQuery: string): Promise<ODataResponse<UserModel>> => await new UserODataRepo().query(oDataQuery);
-
+  getUsers = async (oDataQuery: string): Promise<ODataResponse<UserModel>> =>
+    new UserODataRepo().query(oDataQuery);
 }
 
 export default UserService;

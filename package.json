@@ -11,6 +11,7 @@
     "@nextui-org/react": "^2.6.10",
     "@reduxjs/toolkit": "^1.9.3",
     "@remixicon/react": "^4.6.0",
+    "@supabase/supabase-js": "^2.97.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

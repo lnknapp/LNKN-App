@@ -1,23 +1,27 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { routes } from "../../../app/routes";
-import AccountService from "../../../services/account/AccountService";
-import { ResetPasswordRequest } from "../../../models";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '../../../app/routes';
+import AccountService from '../../../services/account/AccountService';
+
+const accountService = new AccountService();
 
 export function useResetPassword() {
-  const accountService = new AccountService();
   const [showSpinner, setShowSpinner] = useState(false);
   const navigate = useNavigate();
 
-  const resetPassword = async (request: ResetPasswordRequest) => {
+  // Supabase handles the token via the URL hash automatically;
+  // we just need the new password.
+  const resetPassword = async (request: { password: string }) => {
     setShowSpinner(true);
-    const ok = await accountService.resetPassword(request);
-    setShowSpinner(false);
-    if (ok) navigate(routes.account.password.reset.confirmation);
+    try {
+      const ok = await accountService.resetPassword(request.password);
+      if (ok) navigate(routes.account.password.reset.confirmation);
+    } catch (e: any) {
+      console.error('Reset password failed:', e?.message ?? e);
+    } finally {
+      setShowSpinner(false);
+    }
   };
 
-  return {
-    resetPassword,
-    showSpinner
-  };
+  return { resetPassword, showSpinner };
 }

@@ -1,12 +1,13 @@
-import { router, routes } from "../../../app/routes";
-import { useSpinner } from "../../../hooks";
-import { RegisterRequest } from "../../../models";
-import { AccountService } from "../../../services";
-import { showSuccessMessage } from "../../../utils";
+import { router, routes } from '../../../app/routes';
+import { useSpinner } from '../../../hooks';
+import { RegisterRequest } from '../../../models';
+import { AccountService } from '../../../services';
+import { showSuccessMessage } from '../../../utils';
+
+const accountService = new AccountService();
 
 export function useRegistration() {
   const { showSpinner, show, hide } = useSpinner();
-  const accountService = new AccountService();
 
   const registerUser = async (request: RegisterRequest) => {
     show();
@@ -14,47 +15,30 @@ export function useRegistration() {
       const ok = await accountService.register(request);
       hide();
       if (ok) {
-        showSuccessMessage(`Account created successfully!`);
+        showSuccessMessage('Account created! Check your email to confirm before logging in.');
         router.navigate(routes.account.login);
       }
-    }
-    catch(e) {
+    } catch (e: any) {
       hide();
-      console.error(e);
+      console.error('Registration failed:', e?.message ?? e);
     }
-  }
-
-  const checkUsernameExists = async (username: string) => {
-    show();
-    try {
-      const ok = await accountService.checkUsernameExists(username);
-      hide();
-      return ok;
-    }
-    catch(e) {
-      hide();
-      console.error(e);
-    }
-  }
-
-  const checkEmailExists = async (email: string) => {
-    show();
-    try {
-      const ok = await accountService.checkEmailExists(email);
-      hide();
-      return ok;
-    }
-    catch(e) {
-      hide();
-      console.error(e);
-    }
-  }
-
-  return {
-    registerUser,
-    showSpinner,
-    checkUsernameExists,
-    checkEmailExists
   };
 
+  const checkUsernameExists = async (username: string) => {
+    try {
+      return await accountService.checkUsernameExists(username);
+    } catch {
+      return false;
+    }
+  };
+
+  const checkEmailExists = async (email: string) => {
+    try {
+      return await accountService.checkEmailExists(email);
+    } catch {
+      return false;
+    }
+  };
+
+  return { registerUser, showSpinner, checkUsernameExists, checkEmailExists };
 }

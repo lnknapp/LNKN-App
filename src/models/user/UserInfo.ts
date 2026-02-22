@@ -1,7 +1,7 @@
 import { UserRoleModel } from "../../data/entities"
 
 export interface UserInfo {
-  id: number
+  id: string     // Supabase UUID
   userName: string
   roles: UserRoleModel[]
 }

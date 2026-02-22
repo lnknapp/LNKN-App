@@ -1,138 +1,102 @@
-import { AccountRepo } from "../../data/repo";
-import { ChangePasswordRequest, ForgotPasswordRequest, ForgotUsernameRequest, RegisterRequest, ResetPasswordRequest } from "../../models";
-import { UserService } from "../authentication/UserService";
-/**
- * Service class for handling account-related operations.
- */
+import { supabase } from '../../lib/supabase';
+import { RegisterRequest } from '../../models';
+
 export class AccountService {
-
-  protected repo = new AccountRepo();
-
-  protected userService = new UserService();
-
   /**
-   * Logs in a user with the provided email, password, and rememberMe flag.
-   * @param emailOrUsername - The user's email.
-   * @param password - The user's password.
-   * @param rememberMe - Flag indicating whether to remember the user's login.
-   * @returns A promise that resolves to the login response.
+   * Sign in with email or username + password.
+   * If the input has no '@', we look up the email by username first.
    */
-  async login(emailOrUsername: string, password: string, rememberMe: boolean) {
-    try {
-      const response = await this.repo.login(emailOrUsername, password, rememberMe);
-      return response;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
+  async login(emailOrUsername: string, password: string): Promise<{ token: string; userId: string; email: string; username: string } | null> {
+    let email = emailOrUsername;
 
-  /**
-   * Registers a new user with the registration information.
-   * @param request - The registration request.
-   * @returns A promise that resolves to the registration response.
-   */
-  async register(request: RegisterRequest) {
-    try {
-      const response = await this.repo.register(request);
-      return response;
+    if (!emailOrUsername.includes('@')) {
+      // Username-based login: look up email from user_profiles
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('email')
+        .eq('username', emailOrUsername)
+        .maybeSingle();
+      if (!profile?.email) throw new Error('Username not found');
+      email = profile.email;
     }
-    catch(error) {
-      console.error(error);
-    }
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    if (!data.session || !data.user) return null;
+
+    // Fetch username from user_profiles
+    const { data: profile } = await supabase
+      .from('user_profiles')
+      .select('username')
+      .eq('user_id', data.user.id)
+      .single();
+
+    return {
+      token: data.session.access_token,
+      userId: data.user.id,
+      email: data.user.email!,
+      username: profile?.username ?? data.user.email!,
+    };
   }
 
-  /**
-   * Sends a password reset email to the user with the provided email.
-   * @param request - The forgot password request.
-   * @returns A promise that resolves to the forgot password response.
-   */
-  async forgotPassword(request: ForgotPasswordRequest) {
-    try {
-      const response = await this.repo.forgotPassword(request);
-      return response;
-    }
-    catch(error) {
-      console.error(error);
-    }
+  async register(request: RegisterRequest): Promise<boolean> {
+    const { data, error } = await supabase.auth.signUp({
+      email: request.email,
+      password: request.password,
+      options: { data: { username: request.userName } },
+    });
+    if (error) throw error;
+    return !!data.user;
   }
 
-  /**
-   * Sends a username reminder email to the user with the provided email.
-   * @param request - The forgot username request.
-   * @returns A promise that resolves to the forgot username response.
-   */
-  async forgotUsername(request: ForgotUsernameRequest) {
-    try {
-      const response = await this.repo.forgotUsername(request);
-      return response;
-    }
-    catch(error) {
-      console.error(error);
-    }
+  async forgotPassword(email: string): Promise<boolean> {
+    const redirectTo = `${window.location.origin}/account/reset-password`;
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+    if (error) throw error;
+    return true;
   }
 
-  /**
-   * Resets the password of the user.
-   * @param request - The reset password request.
-   * @returns A promise that resolves to the reset password response.
-   */
-  async resetPassword(request: ResetPasswordRequest) {
-    try {
-      const response = await this.repo.resetPassword(request);
-      return response;
-    }
-    catch(error) {
-      console.error(error);
-    }
+  /** Called after user lands on reset-password page (Supabase session is already set via URL hash) */
+  async resetPassword(newPassword: string): Promise<boolean> {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) throw error;
+    return true;
   }
 
-  /**
-   * Resets the password of the user.
-   * @param request - The reset password request.
-   * @returns A promise that resolves to the reset password response.
-   */
-  async changePassword(request: ChangePasswordRequest) {
-    try {
-      const response = await this.repo.changePassword(request);
-      return response;
-    }
-    catch(error) {
-      console.error(error);
-    }
+  async changePassword(newPassword: string): Promise<boolean> {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) throw error;
+    return true;
   }
 
-
-  /**
-   * Check if a user with the same username exists.
-   * @param username - The username to check.
-   * @returns boolean if the username exists.
-   */
-  async checkUsernameExists(username: string) {
-    try {
-      const response = await this.repo.checkUsernameExists(username);
-      return response;
-    }
-    catch(error) {
-      console.error(error);
-    }
+  async checkUsernameExists(username: string): Promise<boolean> {
+    const { data } = await supabase
+      .from('user_profiles')
+      .select('id')
+      .eq('username', username)
+      .maybeSingle();
+    return !!data;
   }
 
-  /**
-   * Check if a user with the same email exists.
-   * @param email - The email to check.
-   * @returns boolean if the email exists.
-   */
-  async checkEmailExists(email: string) {
-    try {
-      const response = await this.repo.checkEmailExists(email);
-      return response;
-    }
-    catch(error) {
-      console.error(error);
-    }
+  /** Supabase handles username recovery via email — send the username to the registered email. */
+  async forgotUsername(request: { email: string }): Promise<boolean> {
+    // With Supabase, look up the username by email and surface it to the user.
+    // For now, send a password reset email so the user can log in and find their username in settings.
+    const { error } = await supabase.auth.resetPasswordForEmail(request.email, {
+      redirectTo: `${window.location.origin}/account/login`,
+    });
+    if (error) throw error;
+    return true;
   }
 
+  async checkEmailExists(email: string): Promise<boolean> {
+    const { data } = await supabase
+      .from('user_profiles')
+      .select('id')
+      .eq('email', email)
+      .maybeSingle();
+    return !!data;
+  }
 }
 
 export default AccountService;

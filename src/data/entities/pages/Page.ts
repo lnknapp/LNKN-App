@@ -4,7 +4,7 @@ import { PageType } from "./PageType";
 
 export interface Page {
   id: number;
-  userId: number;
+  userId: string;  // Supabase UUID
   type: PageType;
   slug?: string | null;
   pixelId?: string | null;
