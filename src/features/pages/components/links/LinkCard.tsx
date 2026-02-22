@@ -1,7 +1,9 @@
 import { Card, CardBody, Chip } from "@nextui-org/react";
 import React from "react";
-import { FaSpotify, FaLink } from "react-icons/fa";
+import { FaSpotify, FaLink, FaGripVertical } from "react-icons/fa";
 import { SiApplemusic } from "react-icons/si";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Button } from "../../../../components/Button/Button";
 import { Link } from "../../../../data/entities/pages/Link";
 import { LinkType } from "../../../../data/entities/pages/LinkType";
@@ -41,20 +43,38 @@ const getPlatformIcon = (link: Link) => {
 };
 
 export const LinkCard: React.FC<LinkCardProps> = ({ link, onEdit, onDelete }) => {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: link.id });
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 10 : undefined,
+  };
+
   return (
-    <Card className="border border-default-200">
-      <CardBody className="flex flex-row items-center gap-3 p-3">
-        {getPlatformIcon(link)}
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-sm truncate">{link.title}</p>
-          {link.url && <p className="text-xs text-default-400 truncate">{link.url}</p>}
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <Chip size="sm" variant="flat" color="default">#{link.position}</Chip>
-          <Button size="sm" variant="light" onClick={() => onEdit(link)}>Edit</Button>
-          <Button size="sm" variant="ghost" color="danger" onClick={() => onDelete(link.id)}>Delete</Button>
-        </div>
-      </CardBody>
-    </Card>
+    <div ref={setNodeRef} style={style}>
+      <Card className="border border-default-200">
+        <CardBody className="flex flex-row items-center gap-3 p-3">
+          <div
+            {...attributes}
+            {...listeners}
+            className="text-default-300 cursor-grab active:cursor-grabbing shrink-0 touch-none"
+          >
+            <FaGripVertical size={16} />
+          </div>
+          {getPlatformIcon(link)}
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-sm truncate">{link.title}</p>
+            {link.url && <p className="text-xs text-default-400 truncate">{link.url}</p>}
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Chip size="sm" variant="flat" color="default">#{link.position}</Chip>
+            <Button size="sm" variant="light" onClick={() => onEdit(link)}>Edit</Button>
+            <Button size="sm" variant="ghost" color="danger" onClick={() => onDelete(link.id)}>Delete</Button>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
   );
 };

@@ -85,7 +85,6 @@ export const AddLinkModal: React.FC<AddLinkModalProps> = ({ isOpen, onClose }) =
         url: url || null,
         position: parseInt(position, 10),
         theme: JSON.stringify(themeObj) as any,
-        page: { ...page, links: [] },
       } as unknown as Link;
 
       const result = await linkService.insert(newLink);
