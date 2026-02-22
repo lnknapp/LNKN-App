@@ -3,6 +3,7 @@ import style from './BasePageLayout.module.scss';
 import { usePageHeader } from "../hooks";
 import { useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
+import { useSidebar } from "../components/AppSidebar/SidebarContext";
 
 function PageHeader() {
   const { title, additionalItems } = usePageHeader();
@@ -52,9 +53,7 @@ export function BasePageLayout({ children }: Readonly<BasePageLayoutProps>) {
   const [actions, setActions] = useState(<></>);
   const location = useLocation();
   const path = location.pathname;
-  const toggleSidebar = () => {
-
-  };
+  const { toggle: toggleSidebar } = useSidebar();
 
   // Reset actions when location changes
   useEffect(() => {

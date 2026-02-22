@@ -6,9 +6,10 @@ import { PageType } from '../../../data/entities/pages';
 
 interface NewPageDropdownProps {
   onSelectPageType: (pageType: PageType) => void;
+  hasProfile?: boolean;
 }
 
-const NewPageDropdown: React.FC<NewPageDropdownProps> = ({ onSelectPageType }) => {
+const NewPageDropdown: React.FC<NewPageDropdownProps> = ({ onSelectPageType, hasProfile }) => {
   const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
 
   return (
@@ -25,14 +26,16 @@ const NewPageDropdown: React.FC<NewPageDropdownProps> = ({ onSelectPageType }) =
         </Button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Dropdown menu with icons" variant="faded">
-        <DropdownItem
-          key={PageType.Profile}
-          startContent={<BiUser className={iconClasses} />}
-          description="Create a personalized profile page."
-          onPress={() => onSelectPageType(PageType.Profile)}
-        >
-          Profile
-        </DropdownItem>
+        {!hasProfile ? (
+          <DropdownItem
+            key={PageType.Profile}
+            startContent={<BiUser className={iconClasses} />}
+            description="Create a personalized profile page."
+            onPress={() => onSelectPageType(PageType.Profile)}
+          >
+            Profile
+          </DropdownItem>
+        ) : null}
         <DropdownItem
           key={PageType.Song}
           startContent={<BiMusic className={iconClasses} />}

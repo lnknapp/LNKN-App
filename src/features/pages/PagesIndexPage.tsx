@@ -17,13 +17,17 @@ export function PagesIndexPage() {
   const { value: pages, loading, error } = useAsync(() => pageService.getAll(), [refreshKey]);
 
   useSetPageHeader("Pages");
+  const hasProfile = pages?.some(p => p.type === PageType.Profile) ?? false;
+
   usePageActions(
     <NewPageDropdown
       onSelectPageType={(pageType: PageType) => {
         setSelectedPageType(pageType);
         onOpen();
       }}
-    />
+      hasProfile={hasProfile}
+    />,
+    [hasProfile]
   );
 
   if (loading) return <SkeletonPageCard />;
