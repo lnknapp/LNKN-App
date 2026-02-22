@@ -24,7 +24,16 @@ export class AccountService {
     if (error) throw error;
     if (!data.session || !data.user) return null;
 
-    // Fetch username from user_profiles
+    // Fetch profile — upsert ensures it exists even if signup trigger never ran
+    const username = data.user.user_metadata?.username ?? null;
+    await supabase
+      .from('user_profiles')
+      .upsert({
+        user_id: data.user.id,
+        email: data.user.email,
+        ...(username ? { username } : {}),
+      }, { onConflict: 'user_id', ignoreDuplicates: true });
+
     const { data: profile } = await supabase
       .from('user_profiles')
       .select('username')
@@ -43,10 +52,21 @@ export class AccountService {
     const { data, error } = await supabase.auth.signUp({
       email: request.email,
       password: request.password,
-      options: { data: { username: request.userName } },
     });
     if (error) throw error;
-    return !!data.user;
+    if (!data.user) return false;
+
+    // Insert the profile row directly — no trigger needed.
+    // signUp returns an active session when email confirmation is disabled.
+    await supabase
+      .from('user_profiles')
+      .upsert({
+        user_id: data.user.id,
+        username: request.userName,
+        email: request.email,
+      }, { onConflict: 'user_id' });
+
+    return true;
   }
 
   async forgotPassword(email: string): Promise<boolean> {
