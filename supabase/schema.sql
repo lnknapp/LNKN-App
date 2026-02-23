@@ -140,8 +140,8 @@ drop policy if exists "Public image read"          on images;
 drop policy if exists "Authenticated image insert" on images;
 drop policy if exists "Authenticated image update" on images;
 create policy "Public image read"           on images for select using (is_deleted = false);
-create policy "Authenticated image insert"  on images for insert with check (auth.role() = 'authenticated');
-create policy "Authenticated image update"  on images for update using (auth.role() = 'authenticated');
+create policy "Authenticated image insert"  on images for insert with check (auth.uid() is not null);
+create policy "Authenticated image update"  on images for update using (auth.uid() is not null);
 
 -- Pages
 alter table pages enable row level security;
@@ -195,11 +195,18 @@ create policy "Public read regions" on regions for select using (true);
 -- ============================================================
 -- TRIGGER: auto-create user_profile row on signup
 -- ============================================================
-create or replace function handle_new_user()
-returns trigger language plpgsql security definer as $$
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer set search_path = public
+as $$
 begin
-  insert into user_profiles (user_id, username, email)
-  values (new.id, new.raw_user_meta_data->>'username', new.email);
+  insert into public.user_profiles (user_id, username, email)
+  values (
+    new.id,
+    new.raw_user_meta_data->>'username',
+    new.email
+  );
   return new;
 end;
 $$;
