@@ -12,6 +12,7 @@
 /build
 /build-staging
 /build-production
+/dist
 
 # misc
 .DS_Store
