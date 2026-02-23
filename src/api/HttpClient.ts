@@ -20,7 +20,7 @@ export default class HttpClient {
   private http: AxiosInstance;
 
   constructor() {
-    const baseURL = process.env.REACT_APP_API_URL;
+    const baseURL = import.meta.env.VITE_API_URL as string;
     const token = store.getState().authentication.userToken;
     const headers = token ? {
       Authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ export default class HttpClient {
 
   get baseUrl(): string { return this.http.defaults.baseURL!; }
 
-  get siteUrl(): string { return process.env.REACT_APP_SITE_URL!; }
+  get siteUrl(): string { return import.meta.env.VITE_SITE_URL as string; }
 
   async get<T = any>(url: string, config?: any): Promise<ResponseData<T>> {
     try {

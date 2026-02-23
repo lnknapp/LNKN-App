@@ -9,7 +9,7 @@ export interface UploadedImage {
 export class ImageRepo {
   getRenderUrl(imageId: number): string {
     // Images stored in the "images" bucket at path "{id}"
-    return `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/images/${imageId}`;
+    return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/images/${imageId}`;
   }
 
   async uploadPageImage(pageId: number, file: File): Promise<UploadedImage> {
